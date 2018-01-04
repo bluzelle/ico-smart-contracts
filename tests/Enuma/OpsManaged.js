@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // OpsManaged Contract Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -252,22 +251,22 @@ describe('Owned Contract', () => {
       })
 
       it('setOpsAddress(this)', async () => {
-         await TestLib.assertThrows(instance.methods.setOpsAddress(instance._address).call({ from: owner }))
+         await TestLib.assertCallFails(instance.methods.setOpsAddress(instance._address).call({ from: owner }))
       })
 
       it('setOpsAddress(owner)', async () => {
-         await TestLib.assertThrows(instance.methods.setOpsAddress(owner).call({ from: owner }))
+         await TestLib.assertCallFails(instance.methods.setOpsAddress(owner).call({ from: owner }))
       })
 
       it('setOpsAddress(other account) as non-owner', async () => {
-         await TestLib.assertThrows(instance.methods.setOpsAddress(otherAccount).call({ from: otherAccount2 }))
+         await TestLib.assertCallFails(instance.methods.setOpsAddress(otherAccount).call({ from: otherAccount2 }))
       })
 
       it('setOpsAddress(other account) as ops', async () => {
          await instance.methods.setOpsAddress(ops).send({ from: owner })
          assert.equal(await instance.methods.opsAddress().call(), ops)
 
-         await TestLib.assertThrows(instance.methods.setOpsAddress(otherAccount).call({ from: ops }))
+         await TestLib.assertCallFails(instance.methods.setOpsAddress(otherAccount).call({ from: ops }))
       })
 
       it('setOpsAddress(other account) as owner', async () => {

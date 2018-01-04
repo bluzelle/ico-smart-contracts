@@ -1,11 +1,11 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.18;
 
 // ----------------------------------------------------------------------------
 // FlexibleTokenSale - Token Sale Contract
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
 import "./FinalizableToken.sol";
@@ -85,7 +85,7 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
       // Use some defaults config values. Classes deriving from FlexibleTokenSale
       // should set their own defaults
       tokensPerKEther     = 100000;
-      bonus               = 10000;
+      bonus               = 0;
       maxTokensPerAccount = 0;
       contributionMin     = 0.1 ether;
 
@@ -113,7 +113,7 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
       // This factor is used when converting cost <-> tokens.
       // 18 is because of the ETH -> Wei conversion.
       // 3 because prices are in K ETH instead of just ETH.
-      // 2 because bonuses are expressed as 10000 for no bonus, 12500 for 25%, etc.
+      // 4 because bonuses are expressed as 0 - 10000 for 0.00% - 100.00% (with 2 decimals).
       tokenConversionFactor = 10**(uint256(18).sub(_token.decimals()).add(3).add(4));
       require(tokenConversionFactor > 0);
 
@@ -169,11 +169,10 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
 
 
    // Allows the owner to set a bonus to apply to all purchases.
-   // For example, setting it to 12000 means that instead of receiving 200 tokens,
-   // for a given price, contributors would receive 240 tokens.
+   // For example, setting it to 2000 means that instead of receiving 200 tokens,
+   // for a given price, contributors would receive 240 tokens (20.00% bonus).
    function setBonus(uint256 _bonus) external onlyOwner returns(bool) {
-      require(_bonus >= 10000);
-      require(_bonus <= 20000);
+      require(_bonus <= 10000);
 
       bonus = _bonus;
 
@@ -237,15 +236,21 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
    }
 
 
-   function buyTokens(address beneficiary) public payable returns (bool) {
+   // Allows the caller to purchase tokens for a specific beneficiary (proxy purchase).
+   function buyTokens(address _beneficiary) public payable returns (uint256) {
+      return buyTokensInternal(_beneficiary, bonus);
+   }
+
+
+   function buyTokensInternal(address _beneficiary, uint256 _bonus) internal returns (uint256) {
       require(!finalized);
       require(!suspended);
       require(currentTime() >= startTime);
       require(currentTime() <= endTime);
       require(msg.value >= contributionMin);
-      require(beneficiary != address(0));
-      require(beneficiary != address(this));
-      require(beneficiary != address(token));
+      require(_beneficiary != address(0));
+      require(_beneficiary != address(this));
+      require(_beneficiary != address(token));
 
       // We don't want to allow the wallet collecting ETH to
       // directly be used to purchase tokens.
@@ -256,7 +261,7 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
       require(saleBalance > 0);
 
       // Calculate how many tokens the contributor could purchase based on ETH received.
-      uint256 tokens = msg.value.mul(tokensPerKEther).mul(bonus).div(tokenConversionFactor);
+      uint256 tokens = msg.value.mul(tokensPerKEther).mul(_bonus.add(10000)).div(tokenConversionFactor);
       require(tokens > 0);
 
       uint256 cost = msg.value;
@@ -269,7 +274,7 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
       if (maxTokensPerAccount > 0) {
          // There is a maximum amount of tokens per account in place.
          // Check if the user already hit that limit.
-         uint256 userBalance = token.balanceOf(beneficiary);
+         uint256 userBalance = getUserTokenBalance(_beneficiary);
          require(userBalance < maxTokensPerAccount);
 
          uint256 quotaBalance = maxTokensPerAccount.sub(userBalance);
@@ -287,7 +292,7 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
          tokens = maxTokens;
 
          // Calculate the actual cost for that new amount of tokens.
-         cost = tokens.mul(tokenConversionFactor).div(tokensPerKEther.mul(bonus));
+         cost = tokens.mul(tokenConversionFactor).div(tokensPerKEther.mul(_bonus.add(10000)));
 
          if (msg.value > cost) {
             // If the contributor sent more ETH than needed to buy the tokens,
@@ -305,16 +310,23 @@ contract FlexibleTokenSale is Finalizable, OpsManaged {
       totalEtherCollected = totalEtherCollected.add(contribution);
 
       // Transfer tokens to the beneficiary.
-      require(token.transfer(beneficiary, tokens));
+      require(token.transfer(_beneficiary, tokens));
 
       // Issue a refund for the excess ETH, as needed.
       if (refund > 0) {
          msg.sender.transfer(refund);
       }
 
-      TokensPurchased(beneficiary, cost, tokens);
+      TokensPurchased(_beneficiary, cost, tokens);
 
-      return true;
+      return tokens;
+   }
+
+
+   // Returns the number of tokens that the user has purchased. Will be checked against the
+   // maximum allowed. Can be overriden in a sub class to change the calculations.
+   function getUserTokenBalance(address _beneficiary) internal view returns (uint256) {
+      return token.balanceOf(_beneficiary);
    }
 
 

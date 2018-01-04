@@ -1,42 +1,42 @@
 
 ----------------------------------------------------------------------------------
 Deploying contract BluzelleToken
-TxID     : 0xdda9d5411797c44409c82923407d14db9211a15fa696daa4d150f417b6424b74
-Address  : 0x70F9c3eE1F5C3B271c69F82B9F2473fe5ae87Ca2
+TxID     : 0x2e360c9b6f24ef727b77f8ea46cdd9ea6ab73c336f050aeae960cae9d17ca219
+Address  : 0x5eB79615b559068283567D11171278CFA9D89272
 Gas used : 1082317
 
 Deploying contract BluzelleTokenSale
-TxID     : 0xc52703c5aec67f40de52fb7f7df599f8b0e390d6e9c4a34b946664f186c7676c
-Address  : 0xef76D94108608F5a7585E703A73B5091bfBc2c7A
-Gas used : 2128016
+TxID     : 0xcc5d751e721b2c5d8643704e52817c53a0d4bb1b184db557e71ddc7714157d5d
+Address  : 0xbE94A9985E0f55ED1D61f74F26e7E7D6B67720A1
+Gas used : 2180737
 
 Initializing the sale contract
-TxID     : 0xfaa14081b318a0909243cfbfc280801be8464b53727e3b1199f0072b08769739
-Gas used : 69539
+TxID     : 0xc33aaf3a2fc0446055cccb4ba621ba4c0b052ab2622c379dfbdb4c5718658259
+Gas used : 69517
 
 Setting the ops key of the token to the sale contract
-TxID     : 0xa1e6d923fadfeaeaa972860a47a94a2f1ab5901c758185bcbea0bf0e6f764887
+TxID     : 0xbd818a6afad7bed3918c744e151e30c17938cda479aa88d34d69b450e204d235
 Gas used : 45481
 
 Setting the ops key of the sale to a ops key
-TxID     : 0xe4908bfbc8d2c64fa3edf682cbf419ffc05350812c0958b486bceac330a9eef3
-Gas used : 45808
+TxID     : 0x8755ab19742f78ac16eed928b6cb26eccc716abd91f483b306268fdf7d790161
+Gas used : 45830
 
-Sending presale tokens to the sale contract
-TxID     : 0xf5e2a77c5db5108056f0423b8de66437d1494185909cd24c47e3ed4f5b149e79
+Sending initial sale tokens to the sale contract
+TxID     : 0xaee571bea6b7eac5e3ceb81ab0e295e64ba826a017f42f77194586ef5a5bb2f6
 Gas used : 52999
 
 ----------------------------------------------------------------------------------
 Gas usage summary
 ----------------------------------------------------------------------------------
 BluzelleToken.new                1082317
-BluzelleTokenSale.new            2128016
-BluzelleTokenSale.initialize     69539
+BluzelleTokenSale.new            2180737
+BluzelleTokenSale.initialize     69517
 BluzelleToken.setOpsAddress      45481
-BluzelleTokenSale.setOpsAddress  45808
+BluzelleTokenSale.setOpsAddress  45830
 BluzelleToken.transfer           52999
 ----------------------------------------------------------------------------------
-Total gas recorded               3424160
+Total gas recorded               3476881
 
 Deployment completed successfully.
 

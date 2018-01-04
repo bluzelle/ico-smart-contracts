@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // FlexibleTokenSale Contract Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -31,9 +30,9 @@ const Utils = require('./lib/StdTestUtils.js')
 //    - buyTokens with minimum contribution - 1 wei
 //    - buyTokens with minimum contribution
 //    - buyTokens with more ETH than maxTokensPerAccount allows
+//    - buyTokens with bonus = 0
+//    - buyTokens with bonus = 755
 //    - buyTokens with bonus = 10000
-//    - buyTokens with bonus = 10755
-//    - buyTokens with bonus = 20000
 //    - buyTokens with more ETH than left for sale
 //    - buyTokens with less tokens left than maxTokensPerAccount
 //    - buyTokens with enough ETH to buy all tokens in a single transaction, and more...
@@ -141,7 +140,7 @@ describe('FlexibleTokenSale Contract - buyTokens tests', () => {
       //})
 
       it('buyTokens for this', async () => {
-         await TestLib.assertThrows(buyTokens(account1, sale._address, contributionMin))
+         await TestLib.assertCallFails(buyTokens(account1, sale._address, contributionMin))
       })
 
       it('buyTokens for wallet', async () => {
@@ -157,19 +156,19 @@ describe('FlexibleTokenSale Contract - buyTokens tests', () => {
       })
 
       it('buyTokens for token contract', async () => {
-         await TestLib.assertThrows(buyTokens(account1, token._address, contributionMin))
+         await TestLib.assertCallFails(buyTokens(account1, token._address, contributionMin))
       })
 
       it('buyTokens with 0 ETH', async () => {
-         await TestLib.assertThrows(buyTokens(account1, account1, new BigNumber(0)))
+         await TestLib.assertCallFails(buyTokens(account1, account1, new BigNumber(0)))
       })
 
       it('buyTokens with 1 wei', async () => {
-         await TestLib.assertThrows(buyTokens(account1, account1, new BigNumber(1)))
+         await TestLib.assertCallFails(buyTokens(account1, account1, new BigNumber(1)))
       })
 
       it('buyTokens with minimum contribution - 1 wei', async () => {
-         await TestLib.assertThrows(buyTokens(account1, account1, contributionMin.sub(1)))
+         await TestLib.assertCallFails(buyTokens(account1, account1, contributionMin.sub(1)))
       })
 
       it('buyTokens with minimum contribution', async () => {
@@ -183,18 +182,18 @@ describe('FlexibleTokenSale Contract - buyTokens tests', () => {
          await sale.methods.setMaxTokensPerAccount(0).send({ from: owner })
       })
 
+      it('buyTokens with bonus = 0', async () => {
+         await sale.methods.setBonus(0).send({ from: owner })
+         await buyTokens(account1, account1, contributionMin)
+      })
+
+      it('buyTokens with bonus = 755', async () => {
+         await sale.methods.setBonus(755).send({ from: owner })
+         await buyTokens(account1, account1, contributionMin)
+      })
+
       it('buyTokens with bonus = 10000', async () => {
          await sale.methods.setBonus(10000).send({ from: owner })
-         await buyTokens(account1, account1, contributionMin)
-      })
-
-      it('buyTokens with bonus = 10755', async () => {
-         await sale.methods.setBonus(10755).send({ from: owner })
-         await buyTokens(account1, account1, contributionMin)
-      })
-
-      it('buyTokens with bonus = 20000', async () => {
-         await sale.methods.setBonus(20000).send({ from: owner })
          await buyTokens(account1, account1, contributionMin)
       })
 
@@ -220,7 +219,7 @@ describe('FlexibleTokenSale Contract - buyTokens tests', () => {
       })
 
       it('buyTokens with an additional minimum contribution', async () => {
-         await TestLib.assertThrows(buyTokens(account1, account1, contributionMin))
+         await TestLib.assertCallFails(buyTokens(account1, account1, contributionMin))
       })
 
       it('buyTokens before start time', async () => {
@@ -228,7 +227,7 @@ describe('FlexibleTokenSale Contract - buyTokens tests', () => {
 
          await sale.methods.changeTime(START_TIME - 1000).send({ from: owner })
 
-         await TestLib.assertThrows(buyTokens(account1, account1, contributionMin))
+         await TestLib.assertCallFails(buyTokens(account1, account1, contributionMin))
       })
 
       it('buyTokens during sale time', async () => {
@@ -240,14 +239,14 @@ describe('FlexibleTokenSale Contract - buyTokens tests', () => {
       it('buyTokens after end time', async () => {
          await sale.methods.changeTime(END_TIME + 1).send({ from: owner })
 
-         await TestLib.assertThrows(buyTokens(account1, account1, contributionMin))
+         await TestLib.assertCallFails(buyTokens(account1, account1, contributionMin))
       })
 
       it('buyTokens after finalized', async () => {
          await sale.methods.changeTime(START_TIME + 1).send({ from: owner })
          await sale.methods.finalize().send({ from: owner })
 
-         await TestLib.assertThrows(buyTokens(account1, account1, contributionMin))
+         await TestLib.assertCallFails(buyTokens(account1, account1, contributionMin))
       })
    })
 })

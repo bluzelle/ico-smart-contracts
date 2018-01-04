@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // Owned Contract Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -108,19 +107,19 @@ describe('Owned Contract', () => {
    context('initiateOwnershipTransfer', async () => {
 
       it('initiateOwnershipTransfer(0)', async () => {
-         await TestLib.assertThrows(instance.methods.initiateOwnershipTransfer(0).call())
+         await TestLib.assertCallFails(instance.methods.initiateOwnershipTransfer(0).call())
       })
 
       it('initiateOwnershipTransfer(this)', async () => {
-         await TestLib.assertThrows(instance.methods.initiateOwnershipTransfer(instance._address).call())
+         await TestLib.assertCallFails(instance.methods.initiateOwnershipTransfer(instance._address).call())
       })
 
       it('initiateOwnershipTransfer(owner)', async () => {
-         await TestLib.assertThrows(instance.methods.initiateOwnershipTransfer(owner).call())
+         await TestLib.assertCallFails(instance.methods.initiateOwnershipTransfer(owner).call())
       })
 
       it('initiateOwnershipTransfer(other account), as non-owner', async () => {
-         await TestLib.assertThrows(instance.methods.initiateOwnershipTransfer(otherAccount).call({ from: otherAccount2 }))
+         await TestLib.assertCallFails(instance.methods.initiateOwnershipTransfer(otherAccount).call({ from: otherAccount2 }))
       })
 
       it('initiateOwnershipTransfer(other account), as owner', async () => {
@@ -139,11 +138,11 @@ describe('Owned Contract', () => {
    context('completeOwnershipTransfer', async () => {
 
       it('completeOwnershipTransfer(owner)', async () => {
-         await TestLib.assertThrows(instance.methods.completeOwnershipTransfer().call({ from: owner }))
+         await TestLib.assertCallFails(instance.methods.completeOwnershipTransfer().call({ from: owner }))
       })
 
       it('completeOwnershipTransfer(yet another account)', async () => {
-         await TestLib.assertThrows(instance.methods.completeOwnershipTransfer().call({ from: otherAccount2 }))
+         await TestLib.assertCallFails(instance.methods.completeOwnershipTransfer().call({ from: otherAccount2 }))
       })
 
       it('completeOwnershipTransfer(other account), as owner', async () => {

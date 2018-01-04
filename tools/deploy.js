@@ -7,6 +7,7 @@
 // The MIT Licence.
 // ----------------------------------------------------------------------------
 
+const fs           = require('fs')
 const Web3         = require('web3')
 const BigNumber    = require('bignumber.js')
 const Moment       = require('moment')
@@ -28,7 +29,7 @@ const Utils        = require('./utils.js')
 // 3. Initialize the sale contract.
 // 4. Set the ops key of token to the sale contract.
 // 5. Set the ops key of sale to a ops key.
-// 6. Send presale tokens from owner to sale contract.
+// 6. Send initial sale tokens from owner to sale contract.
 // ** For each step, validate all properties and events.
 // ----------------------------------------------------------------------------
 
@@ -42,13 +43,13 @@ const TOKEN_TOTALSUPPLY     = new BigNumber("500000000").mul(DECIMALS_FACTOR)
 const CONTRIBUTION_MIN      = new BigNumber(0.1).mul(DECIMALS_FACTOR)
 
 
-// Presale configuration
-const PRESALE_TOKENS                 = new BigNumber("15000000").mul(DECIMALS_FACTOR)
-const PRESALE_TOKENSPERKETHER        = new BigNumber("1700000")
-const PRESALE_BONUS                  = new BigNumber("12000")
-const PRESALE_MAXTOKENSPERACCOUNT    = new BigNumber("17000").mul(DECIMALS_FACTOR)
-const PRESALE_STARTTIME              = 1511870400
-const PRESALE_ENDTIME                = 1512043200
+// Initial Sale Configuration
+const INITIAL_SALE_TOKENS            = new BigNumber("15000000").mul(DECIMALS_FACTOR)
+const INITIAL_TOKENSPERKETHER        = new BigNumber("1700000")
+const INITIAL_BONUS                  = new BigNumber("2000") // 20.00%
+const INITIAL_MAXTOKENSPERACCOUNT    = new BigNumber("17000").mul(DECIMALS_FACTOR)
+const INITIAL_STARTTIME              = 1511870400
+const INITIAL_ENDTIME                = 1512043200
 
 
 var sale = null
@@ -75,7 +76,9 @@ function recordTransaction(description, receipt, display) {
 
 async function run() {
 
-   const web3 = await Utils.buildWeb3('http://localhost:8545')
+   const config = JSON.parse(fs.readFileSync('../config.json'))
+
+   const web3 = await Utils.buildWeb3(config.web3Url)
 
    accounts = await web3.eth.getAccounts()
 
@@ -129,11 +132,11 @@ async function run() {
    sale = deploymentResult.instance
    assert.equal(await sale.methods.owner().call(), owner)
    assert.equal(await sale.methods.currentStage().call(), 1)
-   assert.equal(await sale.methods.bonus().call(), PRESALE_BONUS)
-   assert.equal(await sale.methods.tokensPerKEther().call(), PRESALE_TOKENSPERKETHER.toNumber())
-   assert.equal(await sale.methods.maxTokensPerAccount().call(), PRESALE_MAXTOKENSPERACCOUNT.toNumber())
-   assert.equal(await sale.methods.startTime().call(), PRESALE_STARTTIME)
-   assert.equal(await sale.methods.endTime().call(), PRESALE_ENDTIME)
+   assert.equal(await sale.methods.bonus().call(), INITIAL_BONUS.toNumber())
+   assert.equal(await sale.methods.tokensPerKEther().call(), INITIAL_TOKENSPERKETHER.toNumber())
+   assert.equal(await sale.methods.maxTokensPerAccount().call(), INITIAL_MAXTOKENSPERACCOUNT.toNumber())
+   assert.equal(await sale.methods.startTime().call(), INITIAL_STARTTIME)
+   assert.equal(await sale.methods.endTime().call(), INITIAL_ENDTIME)
    console.log('')
 
    //
@@ -168,10 +171,10 @@ async function run() {
    console.log('')
 
    //
-   // Send presale tokens to the sale contract
+   // Send initial sale tokens to the sale contract
    //
-   console.log('Sending presale tokens to the sale contract')
-   o = await token.methods.transfer(sale._address, PRESALE_TOKENS).send({ from: owner })
+   console.log('Sending initial sale tokens to the sale contract')
+   o = await token.methods.transfer(sale._address, INITIAL_SALE_TOKENS).send({ from: owner })
    recordTransaction('BluzelleToken.transfer', o, true)
    // Check that the Bluzelle constructor did properly fire the transfer event.
    assert.equal(Object.keys(o.events).length, 1)
@@ -179,8 +182,8 @@ async function run() {
    assert.equal(Object.keys(returnValues).length, 6)
    assert.equal(returnValues._from, owner)
    assert.equal(returnValues._to, sale._address)
-   assert.equal(returnValues._value, PRESALE_TOKENS.toNumber())
-   assert.isTrue(new BigNumber(await token.methods.balanceOf(sale._address).call()).eq(PRESALE_TOKENS))
+   assert.equal(returnValues._value, INITIAL_SALE_TOKENS.toNumber())
+   assert.isTrue(new BigNumber(await token.methods.balanceOf(sale._address).call()).eq(INITIAL_SALE_TOKENS))
    console.log('')
 
    //

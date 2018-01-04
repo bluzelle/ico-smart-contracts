@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // Math Library Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -104,16 +103,17 @@ describe('Math Library', () => {
       })
 
       it('add(uint256, 1)', async () => {
-         await TestLib.assertThrows(math.methods.add(uint256Max, 1).call())
+         await TestLib.assertCallFails(math.methods.add(uint256Max, 1).call())
       })
 
       it('add(1, uint256)', async () => {
-         await TestLib.assertThrows(math.methods.add(1, uint256Max).call())
+         await TestLib.assertCallFails(math.methods.add(1, uint256Max).call())
       })
 
       it('add(uint256, uint256)', async () => {
-         await TestLib.assertThrows(math.methods.add(uint256Max, uint256Max).call())
+         await TestLib.assertCallFails(math.methods.add(uint256Max, uint256Max).call())
       })
+
    })
 
 
@@ -124,7 +124,7 @@ describe('Math Library', () => {
       })
 
       it('sub(0, 1)', async () => {
-         await TestLib.assertThrows(math.methods.sub(0, 1).call())
+         await TestLib.assertCallFails(math.methods.sub(0, 1).call())
       })
 
       it('sub(1, 0)', async () => {
@@ -144,11 +144,11 @@ describe('Math Library', () => {
       })
 
       it('add(0, uint256)', async () => {
-         await TestLib.assertThrows(math.methods.sub(0, uint256Max).call())
+         await TestLib.assertCallFails(math.methods.sub(0, uint256Max).call())
       })
 
       it('add(1, uint256)', async () => {
-         await TestLib.assertThrows(math.methods.sub(1, uint256Max).call())
+         await TestLib.assertCallFails(math.methods.sub(1, uint256Max).call())
       })
 
       it('sub(uint256, uint256)', async () => {
@@ -188,15 +188,15 @@ describe('Math Library', () => {
       })
 
       it('mul(uint256, 2)', async () => {
-         await TestLib.assertThrows(math.methods.mul(uint256Max, 2).call())
+         await TestLib.assertCallFails(math.methods.mul(uint256Max, 2).call())
       })
 
       it('mul(2, uint256)', async () => {
-         await TestLib.assertThrows(math.methods.mul(2, uint256Max).call())
+         await TestLib.assertCallFails(math.methods.mul(2, uint256Max).call())
       })
 
       it('mul(uint256, uint256)', async () => {
-         await TestLib.assertThrows(math.methods.mul(uint256Max, uint256Max).call())
+         await TestLib.assertCallFails(math.methods.mul(uint256Max, uint256Max).call())
       })
    })
 
@@ -222,7 +222,7 @@ describe('Math Library', () => {
    context('div', async () => {
 
       it('div(0, 0)', async () => {
-         await TestLib.assertThrows(math.methods.div(0, 0).call())
+         await TestLib.assertCallFails(math.methods.div(0, 0).call())
       })
 
       it('div(0, 1)', async () => {
@@ -234,7 +234,7 @@ describe('Math Library', () => {
       })
 
       it('div(1, 0)', async () => {
-         await TestLib.assertThrows(math.methods.div(1, 0).call())
+         await TestLib.assertCallFails(math.methods.div(1, 0).call())
       })
 
       it('div(1, 1)', async () => {
@@ -270,7 +270,7 @@ describe('Math Library', () => {
       })
 
       it('div(uint256, 0)', async () => {
-         await TestLib.assertThrows(math.methods.div(uint256Max, 0).call())
+         await TestLib.assertCallFails(math.methods.div(uint256Max, 0).call())
       })
 
       it('div(uint256, 1)', async () => {

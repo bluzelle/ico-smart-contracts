@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // ERC20Token Contract Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -181,7 +180,7 @@ describe('ERC20Token Contract', () => {
          const balance = new BigNumber(await token.methods.balanceOf(tokenHolder).call())
          assert.equal(balance.gt(0), true, "Expected tokenHolder balance to be > 0.")
 
-         await TestLib.assertThrows(token.methods.transfer(otherAccount, balance.add(1)).call({ from: tokenHolder }))
+         await TestLib.assertCallFails(token.methods.transfer(otherAccount, balance.add(1)).call({ from: tokenHolder }))
       })
 
       it('transfer balance to other account', async () => {
@@ -198,7 +197,7 @@ describe('ERC20Token Contract', () => {
          const balance = new BigNumber(await token.methods.balanceOf(tokenHolder).call())
          assert.equal(balance, 0)
 
-         await TestLib.assertThrows(token.methods.transfer(otherAccount, 1).call({ from: tokenHolder }))
+         await TestLib.assertCallFails(token.methods.transfer(otherAccount, 1).call({ from: tokenHolder }))
       })
 
       it('transfer all tokens back to token holder', async () => {
@@ -221,7 +220,7 @@ describe('ERC20Token Contract', () => {
       })
 
       it('transferFrom 1 address 0 to other account', async () => {
-         await TestLib.assertThrows(token.methods.transferFrom(0, otherAccount, 1).call({ from: tokenHolder }))
+         await TestLib.assertCallFails(token.methods.transferFrom(0, otherAccount, 1).call({ from: tokenHolder }))
       })
 
       it('transferFrom 0 tokenHolder to address 0', async () => {
@@ -253,8 +252,8 @@ describe('ERC20Token Contract', () => {
          await Utils.checkTransfer(await token.methods.transferFrom(tokenHolder, otherAccount, 0).send({ from: tokenHolder }), tokenHolder, otherAccount, 0)
       })
 
-      it('transferFrom 1 tokenHolder to other account, no allowance ', async () => {
-         await TestLib.assertThrows(token.methods.transferFrom(tokenHolder, otherAccount, 1).call({ from: tokenHolder }))
+      it('transferFrom 1 tokenHolder to other account, no allowance', async () => {
+         await TestLib.assertCallFails(token.methods.transferFrom(tokenHolder, otherAccount, 1).call({ from: tokenHolder }))
       })
 
       it('transferFrom 1 tokenHolder to other account', async () => {
@@ -281,7 +280,7 @@ describe('ERC20Token Contract', () => {
 
          await token.methods.approve(otherAccount, 0).send({ from: tokenHolder })
 
-         await TestLib.assertThrows(token.methods.transferFrom(otherAccount, token._address, 1).call({ from: otherAccount }))
+         await TestLib.assertCallFails(token.methods.transferFrom(otherAccount, token._address, 1).call({ from: otherAccount }))
       })
 
       it('transferFrom 10 while allowance is 1', async () => {
@@ -289,7 +288,7 @@ describe('ERC20Token Contract', () => {
 
          await token.methods.approve(otherAccount, 1).send({ from: tokenHolder })
 
-         await TestLib.assertThrows(token.methods.transferFrom(otherAccount, token._address, 10).call({ from: otherAccount }))
+         await TestLib.assertCallFails(token.methods.transferFrom(otherAccount, token._address, 10).call({ from: otherAccount }))
       })
 
       it('transferFrom 10 while allowance is 10', async () => {
@@ -306,7 +305,7 @@ describe('ERC20Token Contract', () => {
       it('transferFrom 10 again', async () => {
          assert.equal((await token.methods.balanceOf(otherAccount).call()), 45)
 
-         await TestLib.assertThrows(token.methods.transferFrom(otherAccount, token._address, 10).call({ from: otherAccount }))
+         await TestLib.assertCallFails(token.methods.transferFrom(otherAccount, token._address, 10).call({ from: otherAccount }))
       })
 
       it('transferFrom 5 while allowance is 10', async () => {
@@ -325,7 +324,7 @@ describe('ERC20Token Contract', () => {
 
          await token.methods.approve(otherAccount, 0).send({ from: otherAccount })
 
-         await TestLib.assertThrows(token.methods.transferFrom(otherAccount, token._address, 5).call({ from: otherAccount }))
+         await TestLib.assertCallFails(token.methods.transferFrom(otherAccount, token._address, 5).call({ from: otherAccount }))
       })
 
       it('transferFrom 10 + 10 + 1 while allowance is 20', async () => {
@@ -341,7 +340,7 @@ describe('ERC20Token Contract', () => {
          assert.equal(await token.methods.transferFrom(otherAccount, token._address, 10).call({ from: otherAccount }), true)
          await Utils.checkTransfer(await token.methods.transferFrom(otherAccount, token._address, 10).send({ from: otherAccount }), otherAccount, token._address, 10)
 
-         await TestLib.assertThrows(token.methods.transferFrom(otherAccount, token._address, 1).call({ from: otherAccount }))
+         await TestLib.assertCallFails(token.methods.transferFrom(otherAccount, token._address, 1).call({ from: otherAccount }))
 
          const balanceAfter = new BigNumber(await token.methods.balanceOf(otherAccount).call())
 

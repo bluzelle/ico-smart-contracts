@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // FlexibleTokenSale Contract Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -77,10 +76,10 @@ const Utils = require('./lib/StdTestUtils.js')
 //    - setTokensPerKEther as normal
 // setBonus
 //    - setBonus(0)
-//    - setBonus(9999)
+//    - setBonus(750)
+//    - setBonus(1500)
 //    - setBonus(10000)
-//    - setBonus(20000)
-//    - setBonus(20100)
+//    - setBonus(10001)
 //    - setBonus as ops
 //    - setBonus as normal
 // setSaleWindow
@@ -160,7 +159,7 @@ describe('FlexibleTokenSale Contract', () => {
    const TOKEN_TOTALSUPPLY = new BigNumber("1000000").mul(DECIMALS_FACTOR)
 
    const DEFAULT_TOKENSPERKETHER = 100000
-   const DEFAULT_BONUS = 10000
+   const DEFAULT_BONUS = 0
 
    const START_TIME        = Moment().add(1, 'M').unix()
    const END_TIME          = Moment().add(2, 'M').unix()
@@ -227,7 +226,7 @@ describe('FlexibleTokenSale Contract', () => {
       })
 
       it('contributionMin', async () => {
-         assert.equal(await sale.methods.contributionMin().call(), web3.utils.toWei(0.1, 'ether'))
+         assert.equal(await sale.methods.contributionMin().call(), web3.utils.toWei('0.1', 'ether'))
       })
 
       it('walletAddress', async () => {
@@ -344,31 +343,31 @@ describe('FlexibleTokenSale Contract', () => {
 
 
       it('initialize(0)', async () => {
-         await TestLib.assertThrows(sale.methods.initialize(0).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.initialize(0).call({ from: owner }))
       })
 
       it('initialize(this)', async () => {
-         await TestLib.assertThrows(sale.methods.initialize(sale._address).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.initialize(sale._address).call({ from: owner }))
       })
 
       it('initialize(owner)', async () => {
-         await TestLib.assertThrows(sale.methods.initialize(owner).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.initialize(owner).call({ from: owner }))
       })
 
       it('initialize(ops)', async () => {
-         await TestLib.assertThrows(sale.methods.initialize(ops).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.initialize(ops).call({ from: owner }))
       })
 
       it('initialize(wallet)', async () => {
-         await TestLib.assertThrows(sale.methods.initialize(wallet).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.initialize(wallet).call({ from: owner }))
       })
 
       it('initialize as normal', async () => {
-         await TestLib.assertThrows(sale.methods.initialize(token._address).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.initialize(token._address).call({ from: account1 }))
       })
 
       it('initialize as ops', async () => {
-         await TestLib.assertThrows(sale.methods.initialize(token._address).call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.initialize(token._address).call({ from: ops }))
       })
 
       it('initialize as owner', async () => {
@@ -386,19 +385,19 @@ describe('FlexibleTokenSale Contract', () => {
 
 
       it('setWalletAddress(0)', async () => {
-         await TestLib.assertThrows(sale.methods.setWalletAddress(0).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWalletAddress(0).call({ from: owner }))
       })
 
       it('setWalletAddress(this)', async () => {
-         await TestLib.assertThrows(sale.methods.setWalletAddress(sale._address).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWalletAddress(sale._address).call({ from: owner }))
       })
 
       it('setWalletAddress(owner)', async () => {
-         await TestLib.assertThrows(sale.methods.setWalletAddress(owner).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWalletAddress(owner).call({ from: owner }))
       })
 
       it('setWalletAddress(ops)', async () => {
-         await TestLib.assertThrows(sale.methods.setWalletAddress(ops).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWalletAddress(ops).call({ from: owner }))
       })
 
       it('setWalletAddress(wallet)', async () => {
@@ -409,15 +408,15 @@ describe('FlexibleTokenSale Contract', () => {
       })
 
       it('setWalletAddress(token)', async () => {
-         await TestLib.assertThrows(sale.methods.setWalletAddress(token._address).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWalletAddress(token._address).call({ from: owner }))
       })
 
       it('setWalletAddress as normal', async () => {
-         await TestLib.assertThrows(sale.methods.setWalletAddress(account1).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.setWalletAddress(account1).call({ from: account1 }))
       })
 
       it('setWalletAddress as ops', async () => {
-         await TestLib.assertThrows(sale.methods.setWalletAddress(account1).call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.setWalletAddress(account1).call({ from: ops }))
       })
 
       it('setWalletAddress as owner', async () => {
@@ -451,11 +450,11 @@ describe('FlexibleTokenSale Contract', () => {
 
       it('setMaxTokensPerAccount as ops', async () => {
          assert.equal(await sale.methods.opsAddress().call(), ops)
-         await TestLib.assertThrows(sale.methods.setMaxTokensPerAccount(1).call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.setMaxTokensPerAccount(1).call({ from: ops }))
       })
 
       it('setMaxTokensPerAccount as normal', async () => {
-         await TestLib.assertThrows(sale.methods.setMaxTokensPerAccount(1).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.setMaxTokensPerAccount(1).call({ from: account1 }))
       })
    })
 
@@ -463,7 +462,7 @@ describe('FlexibleTokenSale Contract', () => {
    context('setTokensPerKEther', async () => {
 
       it('setTokensPerKEther(0)', async () => {
-         await TestLib.assertThrows(sale.methods.setTokensPerKEther(0).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setTokensPerKEther(0).call({ from: owner }))
       })
 
       it('setTokensPerKEther(1)', async () => {
@@ -479,11 +478,11 @@ describe('FlexibleTokenSale Contract', () => {
 
       it('setTokensPerKEther as ops', async () => {
          assert.equal(await sale.methods.opsAddress().call(), ops)
-         await TestLib.assertThrows(sale.methods.setTokensPerKEther(1).call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.setTokensPerKEther(1).call({ from: ops }))
       })
 
       it('setTokensPerKEther as normal', async () => {
-         await TestLib.assertThrows(sale.methods.setTokensPerKEther(1).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.setTokensPerKEther(1).call({ from: account1 }))
       })
    })
 
@@ -491,11 +490,18 @@ describe('FlexibleTokenSale Contract', () => {
    context('setBonus', async () => {
 
       it('setBonus(0)', async () => {
-         await TestLib.assertThrows(sale.methods.setBonus(0).call({ from: owner }))
+         assert.equal(await sale.methods.setBonus(0).call({ from: owner }), true)
+         Utils.checkSetBonus(await sale.methods.setBonus(0).send({ from: owner }), 0)
       })
 
-      it('setBonus(9999)', async () => {
-         await TestLib.assertThrows(sale.methods.setBonus(9999).call({ from: owner }))
+      it('setBonus(750)', async () => {
+         assert.equal(await sale.methods.setBonus(750).call({ from: owner }), true)
+         Utils.checkSetBonus(await sale.methods.setBonus(750).send({ from: owner }), 750)
+      })
+
+      it('setBonus(1500)', async () => {
+         assert.equal(await sale.methods.setBonus(1500).call({ from: owner }), true)
+         Utils.checkSetBonus(await sale.methods.setBonus(1500).send({ from: owner }), 1500)
       })
 
       it('setBonus(10000)', async () => {
@@ -503,22 +509,17 @@ describe('FlexibleTokenSale Contract', () => {
          Utils.checkSetBonus(await sale.methods.setBonus(10000).send({ from: owner }), 10000)
       })
 
-      it('setBonus(20000)', async () => {
-         assert.equal(await sale.methods.setBonus(20000).call({ from: owner }), true)
-         Utils.checkSetBonus(await sale.methods.setBonus(20000).send({ from: owner }), 20000)
-      })
-
-      it('setBonus(20100)', async () => {
-         await TestLib.assertThrows(sale.methods.setBonus(20100).call({ from: owner }))
+      it('setBonus(10001)', async () => {
+         await TestLib.assertCallFails(sale.methods.setBonus(10001).call({ from: owner }))
       })
 
       it('setBonus as ops', async () => {
          assert.equal(await sale.methods.opsAddress().call(), ops)
-         await TestLib.assertThrows(sale.methods.setBonus(12000).call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.setBonus(2000).call({ from: ops }))
       })
 
       it('setBonus as normal', async () => {
-         await TestLib.assertThrows(sale.methods.setBonus(12000).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.setBonus(2000).call({ from: account1 }))
       })
    })
 
@@ -526,11 +527,11 @@ describe('FlexibleTokenSale Contract', () => {
    context('setSaleWindow', async () => {
 
       it('setSaleWindow(0, 0)', async () => {
-         await TestLib.assertThrows(sale.methods.setSaleWindow(0, 0).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setSaleWindow(0, 0).call({ from: owner }))
       })
 
       it('setSaleWindow(0, 1)', async () => {
-         await TestLib.assertThrows(sale.methods.setSaleWindow(0, 1).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setSaleWindow(0, 1).call({ from: owner }))
       })
 
       it('setSaleWindow(1, 2)', async () => {
@@ -546,7 +547,7 @@ describe('FlexibleTokenSale Contract', () => {
 
       it('setSaleWindow(now, now)', async () => {
          const now = Moment().unix()
-         await TestLib.assertThrows(sale.methods.setSaleWindow(now, now).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setSaleWindow(now, now).call({ from: owner }))
       })
 
       it('setSaleWindow(now, now + 1)', async () => {
@@ -565,12 +566,12 @@ describe('FlexibleTokenSale Contract', () => {
 
       it('setSaleWindow as ops', async () => {
          const now = Moment().unix()
-         await TestLib.assertThrows(sale.methods.setSaleWindow(now, now + 1).call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.setSaleWindow(now, now + 1).call({ from: ops }))
       })
 
       it('setSaleWindow as normal', async () => {
          const now = Moment().unix()
-         await TestLib.assertThrows(sale.methods.setSaleWindow(now, now + 1).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.setSaleWindow(now, now + 1).call({ from: account1 }))
       })
    })
 
@@ -677,16 +678,16 @@ describe('FlexibleTokenSale Contract', () => {
          await sale.methods.changeTime(startTime + 1).send({ from: owner })
 
          assert.equal(await sale.methods.suspended().call(), false)
-         await TestLib.assertThrows(sale.methods.suspend().call({ from: ops }))
-         await TestLib.assertThrows(sale.methods.resume().call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.suspend().call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.resume().call({ from: ops }))
       })
 
       it('suspend / resume as normal', async () => {
          await sale.methods.changeTime(startTime + 1).send({ from: owner })
 
          assert.equal(await sale.methods.suspended().call(), false)
-         await TestLib.assertThrows(sale.methods.suspend().call({ from: account1 }))
-         await TestLib.assertThrows(sale.methods.resume().call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.suspend().call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.resume().call({ from: account1 }))
       })
    })
 
@@ -706,14 +707,14 @@ describe('FlexibleTokenSale Contract', () => {
 
       it('finalize as normal', async () => {
          assert.equal(await sale.methods.finalized().call(), false)
-         await TestLib.assertThrows(sale.methods.finalize().call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.finalize().call({ from: account1 }))
       })
 
       it('finalize as ops', async () => {
          assert.equal(await sale.methods.finalized().call(), false)
          assert.equal(await sale.methods.opsAddress().call(), ops)
 
-         await TestLib.assertThrows(sale.methods.finalize().call({ from: ops }))
+         await TestLib.assertCallFails(sale.methods.finalize().call({ from: ops }))
       })
 
       it('finalize as owner', async () => {
@@ -780,11 +781,11 @@ describe('FlexibleTokenSale Contract', () => {
 
 
          it('reclaimTokens as normal', async () => {
-            await TestLib.assertThrows(sale.methods.reclaimTokens().call({ from: account1 }))
+            await TestLib.assertCallFails(sale.methods.reclaimTokens().call({ from: account1 }))
          })
 
          it('reclaimTokens as ops', async () => {
-            await TestLib.assertThrows(sale.methods.reclaimTokens().call({ from: ops }))
+            await TestLib.assertCallFails(sale.methods.reclaimTokens().call({ from: ops }))
          })
 
          it('reclaimTokens as owner', async () => {

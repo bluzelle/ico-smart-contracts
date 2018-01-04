@@ -5,10 +5,10 @@
   "main": "deployLib.js",
   "dependencies": {
     "async-file": "^2.0.2",
-    "bignumber.js": "^4.1.0",
+    "bignumber.js": "^5.0.0",
     "chai": "^4.1.2",
-    "moment": "^2.19.1",
-    "web3": "^1.0.0-beta.24"
+    "moment": "^2.19.2",
+    "web3": "^1.0.0-beta.26"
   },
   "devDependencies": {
     "mocha": "^4.0.1"

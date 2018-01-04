@@ -1,23 +1,26 @@
 // ----------------------------------------------------------------------------
 // testlib.js (Lite) - Library used for writing unit tests.
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
+const fs   = require('fs')
 const Web3 = require('web3')
 const Path = require('path')
 const Chai = require('chai')
+
 
 const Utils = require('./utils.js')
 
 
 // GLOBALS
-BigNumber = require('bignumber.js')
-assert    = Chai.assert
-Moment    = require('moment')
-web3      = null
+global.BigNumber = require('bignumber.js')
+global.assert    = Chai.assert
+global.Moment    = require('moment')
+global.web3      = null
+
 
 var fn = assert.equal
 
@@ -32,7 +35,10 @@ assert.equal = (a, b, c) => {
 
 
 module.exports.initialize = async () => {
-    web3 = await Utils.buildWeb3('http://localhost:8545')
+   const configFilePath = Utils.findConfigFilePath(Path.resolve('./'))
+   const config = JSON.parse(fs.readFileSync(configFilePath))
+
+   global.web3 = await Utils.buildWeb3(config.web3Url)
 }
 
 
@@ -49,11 +55,7 @@ module.exports.checkStatus = (receipt) => {
 
 function checkStatus(receipt) {
    // Since the Ethereum Byzantium fork, there is a status field in the receipt.
-   // That flag doesn't exist in the testrpc implementation yet. Remove the typeof check once it's added.
-   // https://ethereum.stackexchange.com/questions/28077/how-do-i-detect-a-failed-transaction-after-the-byzantium-fork-as-the-revert-opco
-   if (typeof receipt.status !== 'undefined') {
-      assert.equal(receipt.status, 1)
-   }
+   assert.equal(receipt.status, 1, "Transaction receipt 'status' != 1")
 }
 
 
@@ -88,18 +90,34 @@ module.exports.assertNoEvents = (receipt) => {
 }
 
 
-module.exports.assertThrows = async (promise) => {
+module.exports.assertSendFails = async (promise) => {
+   try {
+      const receipt = await promise
+      assert(receipt.status == '0x0', "Expected transaction receipt to have status 0")
+   } catch (error) {
+      const isRevert = /^.+VM Exception.+revert$/.test(error.message)
+      //const isInvalidOpcode = error.message.indexOf('invalid opcode') > -1
+      //const isOutOfGas      = error.message.indexOf('out of gas') > -1
+
+      //assert(isInvalidOpcode || isOutOfGas || isDecode, "Expected transaction to fail, but got an error instead: " + error)
+      assert(isRevert, "Expected transaction to fail, but got an error instead: " + error)
+   }
+}
+
+
+module.exports.assertCallFails = async (promise) => {
    try {
       await promise
    } catch (error) {
-      const isInvalidOpcode = error.message.indexOf('invalid opcode') > -1
-      const isOutOfGas      = error.message.indexOf('out of gas') > -1
-      const isDecode        = error.message.indexOf("Couldn't decode") > -1 && error.message.indexOf("from ABI: 0x") > -1
+      const isInvalidOpcode = /^.+VM Exception.+invalid opcode$/.test(error.message)
+      const isCallFailure   = /^.+decode.+from ABI: 0x$/.test(error.message)
+      const isRevert        = /^.+VM Exception.+revert$/.test(error.message)
 
-      assert(isInvalidOpcode || isOutOfGas || isDecode, "Expected transaction to fail, but got an error instead: " + error)
+      assert(isCallFailure || isRevert || isInvalidOpcode, "Expected 'call' to fail, but got an error instead: " + error)
 
       return
    }
 
    assert(false, "Did not throw as expected")
 }
+

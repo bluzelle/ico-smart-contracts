@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // FinalizableToken Contract Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -226,7 +225,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(owner).call())
                assert.equal(balance.gt(0), true, "Expected owner balance to be > 0.")
 
-               await TestLib.assertThrows(token.methods.transfer(account1, balance.add(1)).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, balance.add(1)).call({ from: owner }))
             })
 
             it('transfer balance to other account', async () => {
@@ -243,7 +242,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(owner).call())
                assert.equal(balance, 0)
 
-               await TestLib.assertThrows(token.methods.transfer(account1, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, 1).call({ from: owner }))
             })
 
             it('transfer all tokens back to token holder', async () => {
@@ -286,7 +285,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(ops).call())
                assert.equal(balance.gt(0), true, "Expected owner balance to be > 0.")
 
-               await TestLib.assertThrows(token.methods.transfer(account1, balance.add(1)).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, balance.add(1)).call({ from: ops }))
             })
 
             it('transfer balance to other account', async () => {
@@ -303,13 +302,13 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(ops).call())
                assert.equal(balance, 0)
 
-               await TestLib.assertThrows(token.methods.transfer(account1, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, 1).call({ from: ops }))
             })
 
             it('transfer all tokens back', async () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
 
-               await TestLib.assertThrows(token.methods.transfer(ops, balance).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(ops, balance).call({ from: account1 }))
             })
          })
 
@@ -324,41 +323,41 @@ describe('FinalizableToken Contract', () => {
 
 
             it('transfer 0 tokens', async () => {
-               await TestLib.assertThrows(token.methods.transfer(account2, 0).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(account2, 0).call({ from: account1 }))
             })
 
             it('transfer 1 to address 0', async () => {
-               await TestLib.assertThrows(token.methods.transfer(0, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(0, 1).call({ from: account1 }))
             })
 
             it('transfer 1 to this', async () => {
-               await TestLib.assertThrows(token.methods.transfer(token._address, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(token._address, 1).call({ from: account1 }))
             })
 
             it('transfer > balance to other account', async () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.equal(balance.gt(0), true, "Expected owner balance to be > 0.")
 
-               await TestLib.assertThrows(token.methods.transfer(account1, balance.add(1)).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, balance.add(1)).call({ from: account1 }))
             })
 
             it('transfer balance to other account', async () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
 
-               await TestLib.assertThrows(token.methods.transfer(account1, balance).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, balance).call({ from: account1 }))
             })
 
             it('transfer 1 to other account, while balance = 0', async () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.equal(balance, 1998)
 
-               await TestLib.assertThrows(token.methods.transfer(account1, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, 1).call({ from: account1 }))
             })
 
             it('transfer all tokens back to account1', async () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
 
-               await TestLib.assertThrows(token.methods.transfer(account1, balance).call({ from: account2 }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, balance).call({ from: account2 }))
             })
          })
       })
@@ -379,7 +378,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 address 0 to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(0, account1, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(0, account1, 1).call({ from: owner }))
             })
 
             it('transferFrom 0 owner to address 0', async () => {
@@ -425,7 +424,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 owner to other account, no allowance ', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account1, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account1, 1).call({ from: owner }))
             })
 
             it('transferFrom 1 owner to other account', async () => {
@@ -451,7 +450,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(owner, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
             })
 
             it('transferFrom 10 while allowance is 1', async () => {
@@ -460,7 +459,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(owner, 1).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
             })
 
             it('transferFrom 10 while allowance is 10', async () => {
@@ -480,7 +479,7 @@ describe('FinalizableToken Contract', () => {
                const balanceBefore = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.isTrue(balanceBefore.gte(10))
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
             })
 
             it('transferFrom 5 while allowance is 10', async () => {
@@ -503,7 +502,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(owner, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 5).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 5).call({ from: owner }))
             })
 
             it('transferFrom 10 + 10 + 1 while allowance is 20', async () => {
@@ -519,7 +518,7 @@ describe('FinalizableToken Contract', () => {
                assert.equal(await token.methods.transferFrom(account1, account3, 10).call({ from: owner }), true)
                Utils.checkTransfer(await token.methods.transferFrom(account1, account3, 10).send({ from: owner }), account1, account3, 10)
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
 
                const balance1After = new BigNumber(await token.methods.balanceOf(account1).call())
                const balance3After = new BigNumber(await token.methods.balanceOf(account3).call())
@@ -542,7 +541,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 address 0 to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(0, account1, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(0, account1, 1).call({ from: ops }))
             })
 
             it('transferFrom 0 owner to address 0', async () => {
@@ -575,7 +574,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 owner to other account, no allowance ', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account1, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account1, 1).call({ from: ops }))
             })
 
             it('transferFrom 1 owner to other account', async () => {
@@ -614,7 +613,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(ops, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
             })
 
             it('transferFrom 10 while allowance is 1', async () => {
@@ -623,7 +622,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(ops, 1).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
             })
 
             it('transferFrom 10 while allowance is 10', async () => {
@@ -643,7 +642,7 @@ describe('FinalizableToken Contract', () => {
                const balanceBefore = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.isTrue(balanceBefore.gte(10))
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
             })
 
             it('transferFrom 5 while allowance is 10', async () => {
@@ -665,7 +664,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(ops, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 5).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 5).call({ from: ops }))
             })
 
             it('transferFrom 10 + 10 + 1 while allowance is 20', async () => {
@@ -681,7 +680,7 @@ describe('FinalizableToken Contract', () => {
                assert.equal(await token.methods.transferFrom(account1, account3, 10).call({ from: ops }), true)
                Utils.checkTransfer(await token.methods.transferFrom(account1, account3, 10).send({ from: ops }), account1, account3, 10)
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
 
                const balance1After = new BigNumber(await token.methods.balanceOf(account1).call())
                const balance3After = new BigNumber(await token.methods.balanceOf(account3).call())
@@ -700,55 +699,55 @@ describe('FinalizableToken Contract', () => {
 
 
             it('transferFrom 0 address 0 to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(0, account1, 0).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(0, account1, 0).call({ from: account1 }))
             })
 
             it('transferFrom 1 address 0 to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(0, account1, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(0, account1, 1).call({ from: account1 }))
             })
 
             it('transferFrom 0 owner to address 0', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, 0, 0).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 0).call({ from: account1 }))
             })
 
             it('transferFrom 1 owner to address 0', async () => {
                await token.methods.approve(account1, 1).send({ from: owner })
 
-               await TestLib.assertThrows(token.methods.transferFrom(owner, 0, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 1).call({ from: account1 }))
             })
 
             it('transferFrom 0 owner to this', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, token._address, 0).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, token._address, 0).call({ from: account1 }))
             })
 
             it('transferFrom 1 owner to this', async () => {
                await token.methods.approve(account1, 1).send({ from: owner })
 
-               await TestLib.assertThrows(token.methods.transferFrom(owner, token._address, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, token._address, 1).call({ from: account1 }))
             })
 
             it('transferFrom 0 owner to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account1, 0).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account1, 0).call({ from: account1 }))
             })
 
             it('transferFrom 1 owner to other account, no allowance ', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account1, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account1, 1).call({ from: account1 }))
             })
 
             it('transferFrom 1 owner to other account', async () => {
                await token.methods.approve(account1, 1).send({ from: owner })
 
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account1, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account1, 1).call({ from: account1 }))
             })
 
             it('transferFrom 0 ops to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(ops, account1, 0).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(ops, account1, 0).call({ from: account1 }))
             })
 
             it('transferFrom 1 ops to other account', async () => {
                await token.methods.approve(account1, 1).send({ from: ops })
 
-               await TestLib.assertThrows(token.methods.transferFrom(ops, account1, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(ops, account1, 1).call({ from: account1 }))
             })
 
             it('transferFrom 1 other account to this', async () => {
@@ -757,7 +756,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 1).send({ from: account2 })
 
-               TestLib.assertThrows(token.methods.transferFrom(account2, token._address, 1).call({ from: account1 }))
+               TestLib.assertCallFails(token.methods.transferFrom(account2, token._address, 1).call({ from: account1 }))
             })
 
             it('transferFrom 1 yet another account to another account', async () => {
@@ -766,7 +765,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 1).send({ from: account2 })
 
-               TestLib.assertThrows(token.methods.transferFrom(account2, account1, 1).call({ from: account1 }))
+               TestLib.assertCallFails(token.methods.transferFrom(account2, account1, 1).call({ from: account1 }))
             })
 
             it('transferFrom 1 while allowance is 0', async () => {
@@ -775,7 +774,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 0).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 1).call({ from: account1 }))
             })
 
             it('transferFrom 10 while allowance is 1', async () => {
@@ -784,7 +783,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 1).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
             })
 
             it('transferFrom 10 while allowance is 10', async () => {
@@ -793,14 +792,14 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 10).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
             })
 
             it('transferFrom 10 again', async () => {
                const balanceBefore = new BigNumber(await token.methods.balanceOf(account2).call())
                assert.isTrue(balanceBefore.gte(10))
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
             })
 
             it('transferFrom 5 while allowance is 10', async () => {
@@ -809,7 +808,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 10).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 5).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 5).call({ from: account1 }))
             })
 
             it('transferFrom 1 after allowance changed from 10 -> 0', async () => {
@@ -820,7 +819,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 0).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 5).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 5).call({ from: account1 }))
             })
 
             it('transferFrom 10 + 10 + 1 while allowance is 20', async () => {
@@ -830,7 +829,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 20).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
             })
          })
       })
@@ -869,7 +868,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(owner).call())
                assert.equal(balance.gt(0), true, "Expected owner balance to be > 0.")
 
-               await TestLib.assertThrows(token.methods.transfer(account1, balance.add(1)).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, balance.add(1)).call({ from: owner }))
             })
 
             it('transfer balance to other account', async () => {
@@ -890,7 +889,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(owner).call())
                assert.equal(balance, 0)
 
-               await TestLib.assertThrows(token.methods.transfer(account1, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, 1).call({ from: owner }))
             })
 
             it('transfer all tokens back', async () => {
@@ -936,7 +935,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(ops).call())
                assert.equal(balance.gt(0), true, "Expected owner balance to be > 0.")
 
-               await TestLib.assertThrows(token.methods.transfer(account1, balance.add(1)).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, balance.add(1)).call({ from: ops }))
             })
 
             it('transfer balance to other account', async () => {
@@ -953,7 +952,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(ops).call())
                assert.equal(balance, 0)
 
-               await TestLib.assertThrows(token.methods.transfer(account1, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transfer(account1, 1).call({ from: ops }))
             })
 
             it('transfer all tokens back to ops', async () => {
@@ -991,7 +990,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.equal(balance.gt(0), true, "Expected owner balance to be > 0.")
 
-               await TestLib.assertThrows(token.methods.transfer(account2, balance.add(1)).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(account2, balance.add(1)).call({ from: account1 }))
             })
 
             it('transfer balance to other account', async () => {
@@ -1008,7 +1007,7 @@ describe('FinalizableToken Contract', () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.equal(balance, 0)
 
-               await TestLib.assertThrows(token.methods.transfer(account2, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transfer(account2, 1).call({ from: account1 }))
             })
 
             it('transfer all tokens back', async () => {
@@ -1036,7 +1035,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 address 0 to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(0, account1, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(0, account1, 1).call({ from: owner }))
             })
 
             it('transferFrom 0 owner to address 0', async () => {
@@ -1082,7 +1081,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 owner to other account, no allowance ', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account1, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account1, 1).call({ from: owner }))
             })
 
             it('transferFrom 1 owner to other account', async () => {
@@ -1108,7 +1107,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(owner, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
             })
 
             it('transferFrom 10 while allowance is 1', async () => {
@@ -1117,7 +1116,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(owner, 1).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
             })
 
             it('transferFrom 10 while allowance is 10', async () => {
@@ -1137,7 +1136,7 @@ describe('FinalizableToken Contract', () => {
                const balanceBefore = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.isTrue(balanceBefore.gte(10))
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: owner }))
             })
 
             it('transferFrom 5 while allowance is 10', async () => {
@@ -1160,7 +1159,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(owner, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 5).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 5).call({ from: owner }))
             })
 
             it('transferFrom 10 + 10 + 1 while allowance is 20', async () => {
@@ -1176,7 +1175,7 @@ describe('FinalizableToken Contract', () => {
                assert.equal(await token.methods.transferFrom(account1, account3, 10).call({ from: owner }), true)
                Utils.checkTransfer(await token.methods.transferFrom(account1, account3, 10).send({ from: owner }), account1, account3, 10)
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: owner }))
 
                const balance1After = new BigNumber(await token.methods.balanceOf(account1).call())
                const balance3After = new BigNumber(await token.methods.balanceOf(account3).call())
@@ -1199,7 +1198,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 address 0 to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(0, account1, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(0, account1, 1).call({ from: ops }))
             })
 
             it('transferFrom 0 owner to address 0', async () => {
@@ -1232,7 +1231,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 owner to other account, no allowance ', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account1, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account1, 1).call({ from: ops }))
             })
 
             it('transferFrom 1 owner to other account', async () => {
@@ -1271,7 +1270,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(ops, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
             })
 
             it('transferFrom 10 while allowance is 1', async () => {
@@ -1280,7 +1279,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(ops, 1).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
             })
 
             it('transferFrom 10 while allowance is 10', async () => {
@@ -1300,7 +1299,7 @@ describe('FinalizableToken Contract', () => {
                const balanceBefore = new BigNumber(await token.methods.balanceOf(account1).call())
                assert.isTrue(balanceBefore.gte(10))
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 10).call({ from: ops }))
             })
 
             it('transferFrom 5 while allowance is 10', async () => {
@@ -1322,7 +1321,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(ops, 0).send({ from: account1 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 5).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 5).call({ from: ops }))
             })
 
             it('transferFrom 10 + 10 + 1 while allowance is 20', async () => {
@@ -1338,7 +1337,7 @@ describe('FinalizableToken Contract', () => {
                assert.equal(await token.methods.transferFrom(account1, account3, 10).call({ from: ops }), true)
                Utils.checkTransfer(await token.methods.transferFrom(account1, account3, 10).send({ from: ops }), account1, account3, 10)
 
-               await TestLib.assertThrows(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account1, account3, 1).call({ from: ops }))
 
                const balance1After = new BigNumber(await token.methods.balanceOf(account1).call())
                const balance3After = new BigNumber(await token.methods.balanceOf(account3).call())
@@ -1362,7 +1361,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 address 0 to other account', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(0, account2, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(0, account2, 1).call({ from: account1 }))
             })
 
             it('transferFrom 0 owner to address 0', async () => {
@@ -1395,7 +1394,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 1 owner to other account, no allowance ', async () => {
-               await TestLib.assertThrows(token.methods.transferFrom(owner, account2, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, account2, 1).call({ from: account1 }))
             })
 
             it('transferFrom 1 owner to other account', async () => {
@@ -1433,7 +1432,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 0).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 1).call({ from: account1 }))
             })
 
             it('transferFrom 10 while allowance is 1', async () => {
@@ -1442,7 +1441,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 1).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
             })
 
             it('transferFrom 10 while allowance is 10', async () => {
@@ -1462,7 +1461,7 @@ describe('FinalizableToken Contract', () => {
                const balanceBefore = new BigNumber(await token.methods.balanceOf(account2).call())
                assert.isTrue(balanceBefore.gte(10))
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 10).call({ from: account1 }))
             })
 
             it('transferFrom 5 while allowance is 10', async () => {
@@ -1484,7 +1483,7 @@ describe('FinalizableToken Contract', () => {
 
                await token.methods.approve(account1, 0).send({ from: account2 })
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 5).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 5).call({ from: account1 }))
             })
 
             it('transferFrom 10 + 10 + 1 while allowance is 20', async () => {
@@ -1501,7 +1500,7 @@ describe('FinalizableToken Contract', () => {
                assert.equal(await token.methods.transferFrom(account2, account3, 10).call({ from: account1 }), true)
                Utils.checkTransfer(await token.methods.transferFrom(account2, account3, 10).send({ from: account1 }), account2, account3, 10)
 
-               await TestLib.assertThrows(token.methods.transferFrom(account2, account3, 1).call({ from: account1 }))
+               await TestLib.assertCallFails(token.methods.transferFrom(account2, account3, 1).call({ from: account1 }))
 
                const balance1After = new BigNumber(await token.methods.balanceOf(account1).call())
                const balance2After = new BigNumber(await token.methods.balanceOf(account2).call())
@@ -1590,13 +1589,13 @@ describe('FinalizableToken Contract', () => {
 
       it('other account cannot call finalize', async () => {
          assert.equal(await token.methods.finalized().call(), false)
-         await TestLib.assertThrows(token.methods.finalize().call({ from: account1 }))
+         await TestLib.assertCallFails(token.methods.finalize().call({ from: account1 }))
       })
 
       it('ops cannot call finalize', async () => {
          assert.equal(await token.methods.finalized().call(), false)
          assert.equal(await token.methods.opsAddress().call(), ops)
-         await TestLib.assertThrows(token.methods.finalize().call({ from: ops }))
+         await TestLib.assertCallFails(token.methods.finalize().call({ from: ops }))
       })
 
       it('owner can call finalize', async () => {

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.18;
 
 // ----------------------------------------------------------------------------
 // BluzelleToken - ERC20 Compatible Token
@@ -9,7 +9,7 @@ pragma solidity ^0.4.17;
 // The MIT Licence.
 // ----------------------------------------------------------------------------
 
-import "./FinalizableToken.sol";
+import "./Enuma/FinalizableToken.sol";
 import "./BluzelleTokenConfig.sol";
 
 

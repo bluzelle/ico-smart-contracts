@@ -1,12 +1,11 @@
 // ----------------------------------------------------------------------------
 // Finalizable Contract Tests
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib = require('../tools/testlib.js')
 const Utils = require('./lib/StdTestUtils.js')
 
 
@@ -62,7 +61,7 @@ describe('Finalizable Contract', () => {
    context('finalize function', async () => {
 
       it('finalize as normal', async () => {
-         await TestLib.assertThrows(instance.methods.finalize().call({ from: account1 }))
+         await TestLib.assertCallFails(instance.methods.finalize().call({ from: account1 }))
       })
 
       it('finalize as owner', async () => {
@@ -71,7 +70,7 @@ describe('Finalizable Contract', () => {
       })
 
       it('finalize as owner, when already finalized', async () => {
-         await TestLib.assertThrows(instance.methods.finalize().call({ from: owner }))
+         await TestLib.assertCallFails(instance.methods.finalize().call({ from: owner }))
       })
    })
 })

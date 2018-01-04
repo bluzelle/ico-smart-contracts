@@ -1,17 +1,12 @@
 // ----------------------------------------------------------------------------
-// Bluzelle End-To-End Scenario Test
+// FlexibleTokenSale End-To-End Scenario Test
+// Enuma Blockchain Platform
 //
-// Copyright (c) 2017 Bluzelle Networks Pte Ltd.
-// http://www.bluzelle.com/
-// The MIT Licence.
-//
-// Based on FlexibleTokenSale end-to-end tests from Enuma Technologies.
-// Copyright (c) 2017 Enuma Technologies
+// Copyright (c) 2017 Enuma Technologies.
 // https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const StdUtils = require('./Enuma/lib/StdTestUtils.js')
-const Utils    = require('./lib/BluzelleTestUtils.js')
+const StdUtils = require('./lib/StdTestUtils.js')
 
 
 // ----------------------------------------------------------------------------
@@ -24,8 +19,6 @@ const Utils    = require('./lib/BluzelleTestUtils.js')
 //    - Set the ops key of token to the sale contract
 //    - Set the ops key of sale to a ops key
 // - Before Presale
-//    - Update the whitelist 1-by-1
-//    - Update the whitelist in batch
 //    - Set the sale window
 //    - Set the bonus amount
 //    - Set the per account contribution limit
@@ -33,8 +26,7 @@ const Utils    = require('./lib/BluzelleTestUtils.js')
 //    - Give tokens to the sale contract
 // - During Presale
 //    - Contributor makes purchase
-//    - Add another person to the whitelist
-//    - Contributor makes purchase on behalf of another whitelisted account
+//    - Contributor makes purchase on behalf of another account
 //    - Suspend the presale
 //    - Change the bonus amount to 1500 (15.00% bonus)
 //    - Resume the presale
@@ -45,14 +37,12 @@ const Utils    = require('./lib/BluzelleTestUtils.js')
 // - Before Public Sale
 //    - Set new time window for the public sale
 //    - Set a new bonus amount
-//    - Update whitelist with new applicants
-//    - Change the current stage to stage 2
 //    - Set the per account contribution limit
 //    - Assign new amount of tokens for sale
 // - During Public Sale
 //    - Contributor buys max allowed tokens
 //    - Raise per account contribution limit
-//    - Contributor buys max allowed tokens (again)
+//    - Contributor buys max allowed tokens
 //    - Remove the account contribution limit
 //    - Contributor buys all remaining tokens
 // - After Public Sale
@@ -60,10 +50,10 @@ const Utils    = require('./lib/BluzelleTestUtils.js')
 //    - Finalize the token
 //    - Finalize the sale
 //
-describe('Bluzelle End-To-End Scenario', () => {
+describe('FlexibleTokenSale End-To-End Scenario', () => {
 
-   const TOKEN_NAME            = "Bluzelle Token"
-   const TOKEN_SYMBOL          = "BLZ"
+   const TOKEN_NAME            = "FinalizableToken"
+   const TOKEN_SYMBOL          = "FNT"
    const TOKEN_DECIMALS        = 18
    const DECIMALS_FACTOR       = new BigNumber(10).pow(TOKEN_DECIMALS)
    const TOKEN_TOTALSUPPLY     = new BigNumber("500000000").mul(DECIMALS_FACTOR)
@@ -106,7 +96,7 @@ describe('Bluzelle End-To-End Scenario', () => {
 
 
    const buyTokens = async (from, to, amount) => {
-      return Utils.buyTokens(
+      return StdUtils.buyTokens(
          token,
          sale,
          owner,
@@ -142,18 +132,17 @@ describe('Bluzelle End-To-End Scenario', () => {
    context('Initial deployment', async () => {
 
       it('Deploy the token contract', async () => {
-         deploymentResult = await TestLib.deploy('BluzelleToken', [ ], { from: owner })
+         deploymentResult = await TestLib.deploy('FinalizableToken', [ TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS, TOKEN_TOTALSUPPLY ], { from: owner })
          token = deploymentResult.instance
 
          assert.equal(new BigNumber(await token.methods.balanceOf(owner).call()), TOKEN_TOTALSUPPLY)
       })
 
       it('Deploy the sale contract', async () => {
-         deploymentResult = await TestLib.deploy('BluzelleTokenSaleMock', [ wallet, Moment().unix() ], { from: owner })
+         deploymentResult = await TestLib.deploy('FlexibleTokenSaleMock', [ PRESALE_STARTTIME.unix(), PRESALE_ENDTIME.unix(), wallet, Moment().unix() ], { from: owner })
          sale = deploymentResult.instance
 
          assert.equal(await sale.methods.owner().call(), owner)
-         assert.equal(await sale.methods.currentStage().call(), 1)
       })
 
       it('Initialize the sale contract', async () => {
@@ -175,27 +164,6 @@ describe('Bluzelle End-To-End Scenario', () => {
 
 
    context('Before presale', async () => {
-
-      it('Update the whitelist 1-by-1', async () => {
-         assert.equal(await sale.methods.currentStage().call(), 1)
-         await sale.methods.setWhitelistedStatus(account1, 1).send({ from: owner })
-         await sale.methods.setWhitelistedStatus(account2, 1).send({ from: ops })
-         assert.equal(await sale.methods.whitelist(account1).call(), 1)
-         assert.equal(await sale.methods.whitelist(account2).call(), 1)
-      })
-
-      it('Update the whitelist in batch', async () => {
-         assert.equal(await sale.methods.currentStage().call(), 1)
-
-         var addresses = [ account3, account4, account5 ]
-
-         assert.equal(await sale.methods.setWhitelistedBatch(addresses, 1).call({ from: ops }), true)
-         receipt = await sale.methods.setWhitelistedBatch(addresses, 1).send({ from: ops })
-
-         for (i = 0; i < addresses.length; i++) {
-            assert.equal(await sale.methods.whitelist(addresses[i]).call(), 1)
-         }
-      })
 
       it('Set the sale window', async () => {
          await sale.methods.setSaleWindow(PRESALE_STARTTIME.unix(), PRESALE_ENDTIME.unix()).send({ from: owner })
@@ -236,12 +204,7 @@ describe('Bluzelle End-To-End Scenario', () => {
          await buyTokens(account1, account1, new BigNumber(web3.utils.toWei('0.1', 'ether')))
       })
 
-      it('Add another person to the whitelist', async () => {
-         await sale.methods.setWhitelistedStatus(account6, 1).send({ from: ops })
-         assert.equal(await sale.methods.whitelist(account6).call(), 1)
-      })
-
-      it('Contributor makes purchase on behalf of another whitelisted account', async () => {
+      it('Contributor makes purchase on behalf of another account', async () => {
          await buyTokens(account6, account2, new BigNumber(web3.utils.toWei('0.1', 'ether')))
       })
 
@@ -304,17 +267,6 @@ describe('Bluzelle End-To-End Scenario', () => {
          assert.equal(await sale.methods.bonus().call(), PUBLICSALE_BONUS)
       })
 
-      it('Update whitelist with new applicants', async () => {
-         var addresses = [ account7 ]
-
-         assert.equal(await sale.methods.setWhitelistedBatch(addresses, 2).call({ from: ops }), true)
-         receipt = await sale.methods.setWhitelistedBatch(addresses, 2).send({ from: ops })
-
-         for (i = 0; i < addresses.length; i++) {
-            assert.equal(await sale.methods.whitelist(addresses[i]).call(), 2)
-         }
-      })
-
       it('Set per account contribution limit', async () => {
          await sale.methods.setMaxTokensPerAccount(PUBLICSALE_MAXTOKENSPERACCOUNT).send({ from: owner })
          assert.equal(new BigNumber(await sale.methods.maxTokensPerAccount().call()), PUBLICSALE_MAXTOKENSPERACCOUNT)
@@ -328,11 +280,6 @@ describe('Bluzelle End-To-End Scenario', () => {
       it('Give tokens to the sale contract', async () => {
          await token.methods.transfer(sale._address, PUBLICSALE_TOKENS).send({ from: owner })
          assert.equal(new BigNumber(await token.methods.balanceOf(sale._address).call()), PUBLICSALE_TOKENS)
-      })
-
-      it('Set current stage', async () => {
-         await sale.methods.setCurrentStage(2).send({ from: owner })
-         assert.equal(await sale.methods.currentStage().call(), 2)
       })
    })
 
@@ -357,7 +304,7 @@ describe('Bluzelle End-To-End Scenario', () => {
          await sale.methods.setMaxTokensPerAccount(PUBLICSALE_MAXTOKENSPERACCOUNT.mul(2)).send({ from: owner })
       })
 
-      it('Contributor buys max allowed tokens (again)', async () => {
+      it('Contributor buys max allowed tokens', async () => {
          await buyTokens(account7, account7, -1)
       })
 

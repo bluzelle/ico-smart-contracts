@@ -1,13 +1,13 @@
 // ----------------------------------------------------------------------------
 // Standard Contract Testing Utility Library
-// Enuma Blockchain Framework
+// Enuma Blockchain Platform
 //
 // Copyright (c) 2017 Enuma Technologies.
-// http://www.enuma.io/
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
 
-const TestLib = require('../../tools/testlib.js')
+const TestLib = require('../../../tools/testlib.js')
 
 
 module.exports.tokensFromWei = function (tokensPerKEther, weiAmount, bonus) {
@@ -16,7 +16,7 @@ module.exports.tokensFromWei = function (tokensPerKEther, weiAmount, bonus) {
 
 
 function tokensFromWei(tokensPerKEther, weiAmount, bonus) {
-   return weiAmount.mul(tokensPerKEther).mul(bonus).div(1000).div(10000)
+   return weiAmount.mul(tokensPerKEther).mul(bonus.add(10000)).div(1000).div(10000)
 }
 
 
@@ -26,7 +26,7 @@ module.exports.weiFromTokens = function (tokensPerKEther, tokenAmount, bonus) {
 
 
 function weiFromTokens(tokensPerKEther, tokenAmount, bonus) {
-   return tokenAmount.mul(1000).mul(10000).div(tokensPerKEther.mul(bonus))
+   return tokenAmount.mul(1000).mul(10000).div(tokensPerKEther.mul(bonus.add(10000)))
 }
 
 
@@ -322,6 +322,7 @@ module.exports.buyTokens = async (token, sale, owner, wallet, DECIMALS_FACTOR, f
    const totalEtherCollectedBefore = new BigNumber(await sale.methods.totalEtherCollected().call())
 
    const bonus                     = new BigNumber(await sale.methods.bonus().call())
+
    var   tokensPerKEther           = new BigNumber(await sale.methods.tokensPerKEther().call())
    const maxTokensPerAccount       = new BigNumber(await sale.methods.maxTokensPerAccount().call())
 
@@ -359,7 +360,7 @@ module.exports.buyTokens = async (token, sale, owner, wallet, DECIMALS_FACTOR, f
       await sale.methods.setTokensPerKEther(tokensPerKEther).send({ from: owner })
 
       // Send 2 ETH to make sure we send way over the cost for purchasing the entire window
-      transferAmount = new BigNumber(web3.utils.toWei(2, 'ether'))
+      transferAmount = new BigNumber(web3.utils.toWei('2', 'ether'))
 
       expectedTokens    = maxTokens
       expectedTokenCost = weiFromTokens(tokensPerKEther, expectedTokens, bonus).trunc()
@@ -379,7 +380,7 @@ module.exports.buyTokens = async (token, sale, owner, wallet, DECIMALS_FACTOR, f
    //
    // Purchase the tokens
    //
-   assert.equal(await sale.methods.buyTokens(to).call({ from: from, value: transferAmount, gasPrice: gasPrice }), true)
+   assert.equal(new BigNumber(await sale.methods.buyTokens(to).call({ from: from, value: transferAmount, gasPrice: gasPrice })), expectedTokens)
    const receipt = await sale.methods.buyTokens(to).send({ from: from, value: transferAmount, gasPrice: gasPrice })
 
    //

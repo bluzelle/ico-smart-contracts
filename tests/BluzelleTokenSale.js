@@ -3,12 +3,14 @@
 //
 // Copyright (c) 2017 Bluzelle Networks Pte Ltd.
 // http://www.bluzelle.com/
-//
 // The MIT Licence.
+//
+// Based on FlexibleTokenSale tests from Enuma Technologies.
+// Copyright (c) 2017 Enuma Technologies
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
-const TestLib  = require('../tools/testlib.js')
-const StdUtils = require('./lib/StdTestUtils.js')
+const StdUtils = require('./Enuma/lib/StdTestUtils.js')
 const Utils    = require('./lib/BluzelleTestUtils.js')
 
 
@@ -18,6 +20,8 @@ const Utils    = require('./lib/BluzelleTestUtils.js')
 // Construction and basic properties
 //    - whitelist
 //    - currentStage
+//    - stageBonus
+//    - accountTokensPurchased
 //    - startTime
 //    - endTime
 //    - suspended
@@ -40,6 +44,17 @@ const Utils    = require('./lib/BluzelleTestUtils.js')
 //    - setCurrentStage(1)
 //    - setCurrentStage(0)
 //    - setCurrentStage(100)
+//    - setCurrentStage as ops
+//    - setCurrentStage as normal
+// setStageBonus
+//    - setStageBonus(0, 5)
+//    - setStageBonus(1, 5)
+//    - setStageBonus(1, 10000)
+//    - setStageBonus(1, 10001)
+//    - setStageBonus(2, 750)
+//    - setStageBonus(1, 0)
+//    - setStageBonus as ops
+//    - setStageBonus as normal
 // setWhitelistedStatus
 //    - setWhitelistedStatus(0, 1)
 //    - setWhitelistedStatus(this, 1)
@@ -56,24 +71,29 @@ const Utils    = require('./lib/BluzelleTestUtils.js')
 //    - setWhitelistedStatus as normal
 // setWhitelistedBatch
 //    - setWhitelistedBatch with empty batch
-//    - setWhitelistedBatch with array length mismatch
 //    - setWhitelistedBatch as normal
 //    - setWhitelistedBatch as ops
 //    - setWhitelistedBatch as owner
 //    - setWhitelistedBatch - rerun the same batch again
 //    - setWhitelistedBatch - remove everybody from whitelist
 // buyTokens
-//    - buyTokens where sender nor receiver whitelisted
-//    x buyTokens where sender not whitelisted
-//    x buyTokens where sender beneficiary not whitelisted
+//    - buyTokens where neither sender nor receiver whitelisted
+//    - buyTokens where sender not whitelisted
+//    - buyTokens where beneficiary not whitelisted
 //    - buyTokens stage 1, whitelisted stage 1
 //    - buyTokens stage 1, whitelisted stage 2
 //    - buyTokens stage 2, whitelisted stage 2
 //    - buyTokens stage 2, whitelisted stage 3
 //    - buyTokens stage 3, whitelisted stage 1
 //    - buyTokens stage 3, after removed from whitelist
+//    - buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus > base bonus
+//    - buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus = 0
+//    - buyTokens with limit of 1000 tokens
+//    - buyTokens with limit of 1000 tokens and someone else did a proxy purchase already
+//    - buyTokens with limit of 1000 tokens and owner already assigned tokens out-of-band
 // Events
 //    - CurrentStageUpdated
+//    - StageBonusUpdated
 //    - WhitelistedStatusUpdated
 //       * Covered when appropriate in the different function tests.
 //
@@ -86,7 +106,7 @@ describe('BluzelleTokenSale Contract', () => {
    const TOKEN_TOTALSUPPLY   = new BigNumber("500000000").mul(DECIMALS_FACTOR)
 
    const TOKENSPERKETHER     = 1700000
-   const BONUS               = 12000
+   const BONUS               = 2000
    const MAXTOKENSPERACCOUNT = new BigNumber("17000").mul(DECIMALS_FACTOR)
    const CONTRIBUTION_MIN    = new BigNumber(0.1).mul(DECIMALS_FACTOR)
    const START_TIME          = 1511870400
@@ -108,8 +128,8 @@ describe('BluzelleTokenSale Contract', () => {
    var account5 = null
 
 
-   const buyTokens = async (from, to, amount) => {
-      return StdUtils.buyTokens(
+   const buyTokens = async (from, to, amount, actualBonus) => {
+      return Utils.buyTokens(
          token,
          sale,
          owner,
@@ -145,8 +165,8 @@ describe('BluzelleTokenSale Contract', () => {
       sale = deploymentResult.instance
 
       const initialSaleTokens = new BigNumber("1000000").mul(DECIMALS_FACTOR)
-      await token.methods.setOpsAddress(sale._address).send({ from: owner });
-      await sale.methods.setOpsAddress(ops).send({ from: owner });
+      await token.methods.setOpsAddress(sale._address).send({ from: owner })
+      await sale.methods.setOpsAddress(ops).send({ from: owner })
       await token.methods.transfer(sale._address, initialSaleTokens).send({ from: owner })
       await sale.methods.initialize(token._address).send({ from: owner })
    })
@@ -221,13 +241,21 @@ describe('BluzelleTokenSale Contract', () => {
       it('currentStage', async () => {
          assert.equal(await sale.methods.currentStage().call(), 1)
       })
+
+      it('stageBonus', async () => {
+         assert.equal(await sale.methods.stageBonus(1).call(), 0)
+      })
+
+      it('accountTokensPurchased', async () => {
+         assert.equal(await sale.methods.accountTokensPurchased(account1).call(), 0)
+      })
    })
 
 
    context('setCurrentStage', async () => {
 
       it('setCurrentStage(0)', async () => {
-         await TestLib.assertThrows(sale.methods.setCurrentStage(0).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setCurrentStage(0).call({ from: owner }))
       })
 
       it('setCurrentStage(1)', async () => {
@@ -243,18 +271,72 @@ describe('BluzelleTokenSale Contract', () => {
       })
 
       it('setCurrentStage(1)', async () => {
-         await TestLib.assertThrows(sale.methods.setCurrentStage(1).call({ from: owner }))
+         assert.equal(await sale.methods.currentStage().call(), 2)
+         assert.equal(await sale.methods.setCurrentStage(1).call({ from: owner }), true)
+         Utils.checkSetCurrentStage(await sale.methods.setCurrentStage(1).send({ from: owner }), 1)
+         assert.equal(await sale.methods.currentStage().call(), 1)
       })
 
       it('setCurrentStage(0)', async () => {
-         await TestLib.assertThrows(sale.methods.setCurrentStage(0).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setCurrentStage(0).call({ from: owner }))
       })
 
       it('setCurrentStage(100)', async () => {
-         assert.equal(await sale.methods.currentStage().call(), 2)
          assert.equal(await sale.methods.setCurrentStage(100).call({ from: owner }), true)
          Utils.checkSetCurrentStage(await sale.methods.setCurrentStage(100).send({ from: owner }), 100)
          assert.equal(await sale.methods.currentStage().call(), 100)
+      })
+
+      it('setCurrentStage as ops', async () => {
+         await TestLib.assertCallFails(sale.methods.setCurrentStage(1).call({ from: ops }))
+      })
+
+      it('setCurrentStage as normal', async () => {
+         await TestLib.assertCallFails(sale.methods.setCurrentStage(1).call({ from: account1 }))
+      })
+   })
+
+
+   context('setStageBonus', async () => {
+
+      it('setStageBonus(0, 5)', async () => {
+         await TestLib.assertCallFails(sale.methods.setStageBonus(0, 5).call({ from: owner }))
+      })
+
+      it('setStageBonus(1, 5)', async () => {
+         assert.equal(await sale.methods.setStageBonus(1, 5).call({ from: owner }), true)
+         Utils.checkSetStageBonus(await sale.methods.setStageBonus(1, 5).send({ from: owner }), 1, 5)
+         assert.equal(await sale.methods.stageBonus(1).call(), 5)
+      })
+
+      it('setStageBonus(1, 10000)', async () => {
+         assert.equal(await sale.methods.setStageBonus(1, 10000).call({ from: owner }), true)
+         Utils.checkSetStageBonus(await sale.methods.setStageBonus(1, 10000).send({ from: owner }), 1, 10000)
+         assert.equal(await sale.methods.stageBonus(1).call(), 10000)
+      })
+
+      it('setStageBonus(1, 10001)', async () => {
+         await TestLib.assertCallFails(sale.methods.setStageBonus(1, 10001).call({ from: owner }))
+      })
+
+      it('setStageBonus(2, 750)', async () => {
+         assert.equal(await sale.methods.setStageBonus(2, 750).call({ from: owner }), true)
+         Utils.checkSetStageBonus(await sale.methods.setStageBonus(2, 750).send({ from: owner }), 2, 750)
+         assert.equal(await sale.methods.stageBonus(2).call(), 750)
+      })
+
+      it('setStageBonus(1, 0)', async () => {
+         assert.equal(await sale.methods.setStageBonus(1, 0).call({ from: owner }), true)
+         Utils.checkSetStageBonus(await sale.methods.setStageBonus(1, 0).send({ from: owner }), 1, 0)
+         assert.equal(await sale.methods.stageBonus(1).call(), 0)
+      })
+
+      it('setStageBonus as ops', async () => {
+         await TestLib.assertCallFails(sale.methods.setStageBonus(1, 0).call({ from: ops }))
+      })
+
+      it('setStageBonus as normal', async () => {
+         await TestLib.assertCallFails(sale.methods.setStageBonus(1, 0).call({ from: account1 }))
       })
    })
 
@@ -262,15 +344,15 @@ describe('BluzelleTokenSale Contract', () => {
    context('setWhitelistedStatus', async () => {
 
       it('setWhitelistedStatus(0, 1)', async () => {
-         await TestLib.assertThrows(sale.methods.setWhitelistedStatus(0, 1).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWhitelistedStatus(0, 1).call({ from: owner }))
       })
 
       it('setWhitelistedStatus(this, 1)', async () => {
-         await TestLib.assertThrows(sale.methods.setWhitelistedStatus(sale._address, 1).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWhitelistedStatus(sale._address, 1).call({ from: owner }))
       })
 
       it('setWhitelistedStatus(wallet, 1)', async () => {
-         await TestLib.assertThrows(sale.methods.setWhitelistedStatus(wallet, 1).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWhitelistedStatus(wallet, 1).call({ from: owner }))
       })
 
       it('setWhitelistedStatus(owner, 1)', async () => {
@@ -322,7 +404,7 @@ describe('BluzelleTokenSale Contract', () => {
       })
 
       it('setWhitelistedStatus as normal', async () => {
-         await TestLib.assertThrows(sale.methods.setWhitelistedStatus(account2, 2).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.setWhitelistedStatus(account2, 2).call({ from: account1 }))
       })
    })
 
@@ -331,74 +413,61 @@ describe('BluzelleTokenSale Contract', () => {
 
       it('setWhitelistedBatch with empty batch', async () => {
          var addresses = []
-         var stages    = []
 
-         await TestLib.assertThrows(sale.methods.setWhitelistedBatch(addresses, stages).call({ from: owner }))
-      })
-
-      it('setWhitelistedBatch with array length mismatch', async () => {
-         var addresses = [account1]
-         var stages    = [1, 2]
-
-         await TestLib.assertThrows(sale.methods.setWhitelistedBatch(addresses, stages).call({ from: owner }))
+         await TestLib.assertCallFails(sale.methods.setWhitelistedBatch(addresses, 1).call({ from: owner }))
       })
 
       it('setWhitelistedBatch as normal', async () => {
          var addresses = [ account1, account2, account3, account4, account5 ]
-         var stages    = [ 1, 2, 5, 0, 1000 ]
 
-         await TestLib.assertThrows(sale.methods.setWhitelistedBatch(addresses, stages).call({ from: account1 }))
+         await TestLib.assertCallFails(sale.methods.setWhitelistedBatch(addresses, 5).call({ from: account1 }))
       })
 
       it('setWhitelistedBatch as ops', async () => {
          var addresses = [ account1, account2, account3, account4, account5 ]
-         var stages    = [ 1, 2, 5, 0, 1000 ]
 
-         assert.equal(await sale.methods.setWhitelistedBatch(addresses, stages).call({ from: ops }), true)
-         receipt = await sale.methods.setWhitelistedBatch(addresses, stages).send({ from: ops })
-         Utils.checkSetWhitelistedBatch(receipt, addresses, stages)
+         assert.equal(await sale.methods.setWhitelistedBatch(addresses, 5).call({ from: ops }), true)
+         receipt = await sale.methods.setWhitelistedBatch(addresses, 5).send({ from: ops })
+         Utils.checkSetWhitelistedBatch(receipt, addresses, 5)
 
          for (i = 0; i < addresses.length; i++) {
-            assert.equal(await sale.methods.whitelist(addresses[i]).call(), stages[i])
+            assert.equal(await sale.methods.whitelist(addresses[i]).call(), 5)
          }
       })
 
       it('setWhitelistedBatch as owner', async () => {
          var addresses = [ account1, account2, account3, account4, account5 ]
-         var stages    = [ 0, 1, 7, 3, 0 ]
 
-         assert.equal(await sale.methods.setWhitelistedBatch(addresses, stages).call({ from: ops }), true)
-         receipt = await sale.methods.setWhitelistedBatch(addresses, stages).send({ from: ops })
-         Utils.checkSetWhitelistedBatch(receipt, addresses, stages)
+         assert.equal(await sale.methods.setWhitelistedBatch(addresses, 10).call({ from: owner }), true)
+         receipt = await sale.methods.setWhitelistedBatch(addresses, 10).send({ from: owner })
+         Utils.checkSetWhitelistedBatch(receipt, addresses, 10)
 
          for (i = 0; i < addresses.length; i++) {
-            assert.equal(await sale.methods.whitelist(addresses[i]).call(), stages[i])
+            assert.equal(await sale.methods.whitelist(addresses[i]).call(), 10)
          }
       })
 
       it('rerun same batch again', async () => {
          var addresses = [ account1, account2, account3, account4, account5 ]
-         var stages    = [ 0, 1, 7, 3, 0 ]
 
-         assert.equal(await sale.methods.setWhitelistedBatch(addresses, stages).call({ from: ops }), true)
-         receipt = await sale.methods.setWhitelistedBatch(addresses, stages).send({ from: ops })
-         Utils.checkSetWhitelistedBatch(receipt, addresses, stages)
+         assert.equal(await sale.methods.setWhitelistedBatch(addresses, 10).call({ from: ops }), true)
+         receipt = await sale.methods.setWhitelistedBatch(addresses, 10).send({ from: ops })
+         Utils.checkSetWhitelistedBatch(receipt, addresses, 10)
 
          for (i = 0; i < addresses.length; i++) {
-            assert.equal(await sale.methods.whitelist(addresses[i]).call(), stages[i])
+            assert.equal(await sale.methods.whitelist(addresses[i]).call(), 10)
          }
       })
 
       it('remove everybody from whitelist', async () => {
          var addresses = [ account1, account2, account3, account4, account5 ]
-         var stages    = [ 0, 0, 0, 0, 0 ]
 
-         assert.equal(await sale.methods.setWhitelistedBatch(addresses, stages).call({ from: ops }), true)
-         receipt = await sale.methods.setWhitelistedBatch(addresses, stages).send({ from: ops })
-         Utils.checkSetWhitelistedBatch(receipt, addresses, stages)
+         assert.equal(await sale.methods.setWhitelistedBatch(addresses, 0).call({ from: ops }), true)
+         receipt = await sale.methods.setWhitelistedBatch(addresses, 0).send({ from: ops })
+         Utils.checkSetWhitelistedBatch(receipt, addresses, 0)
 
          for (i = 0; i < addresses.length; i++) {
-            assert.equal(await sale.methods.whitelist(addresses[i]).call(), stages[i])
+            assert.equal(await sale.methods.whitelist(addresses[i]).call(), 0)
          }
       })
    })
@@ -414,8 +483,8 @@ describe('BluzelleTokenSale Contract', () => {
          sale = deploymentResult.instance
 
          const initialSaleTokens = new BigNumber("1000000").mul(DECIMALS_FACTOR)
-         await token.methods.setOpsAddress(sale._address).send({ from: owner });
-         await sale.methods.setOpsAddress(ops).send({ from: owner });
+         await token.methods.setOpsAddress(sale._address).send({ from: owner })
+         await sale.methods.setOpsAddress(ops).send({ from: owner })
          await token.methods.transfer(sale._address, initialSaleTokens).send({ from: owner })
          await sale.methods.initialize(token._address).send({ from: owner })
          await sale.methods.changeTime(START_TIME + 1).send({ from: owner })
@@ -423,10 +492,28 @@ describe('BluzelleTokenSale Contract', () => {
       })
 
 
-      it('buyTokens without being whitelisted', async () => {
+      it('buyTokens where neither sender nor receiver whitelisted', async () => {
+         assert.equal(await sale.methods.currentStage().call(), 1)
          assert.equal(await sale.methods.whitelist(account1).call(), 0)
 
-         await TestLib.assertThrows(buyTokens(account1, account1, CONTRIBUTION_MIN))
+         await TestLib.assertCallFails(buyTokens(account1, account1, CONTRIBUTION_MIN))
+      })
+
+      it('buyTokens where sender not whitelisted', async () => {
+         assert.equal(await sale.methods.currentStage().call(), 1)
+         assert.equal(await sale.methods.whitelist(account1).call(), 0)
+         await sale.methods.setWhitelistedStatus(account2, 1).send({ from: owner })
+         assert.equal(await sale.methods.whitelist(account2).call(), 1)
+
+         await TestLib.assertCallFails(buyTokens(account1, account2, CONTRIBUTION_MIN))
+      })
+
+      it('buyTokens where beneficiary not whitelisted', async () => {
+         assert.equal(await sale.methods.currentStage().call(), 1)
+         assert.equal(await sale.methods.whitelist(account1).call(), 0)
+         assert.equal(await sale.methods.whitelist(account2).call(), 1)
+
+         await TestLib.assertCallFails(buyTokens(account2, account1, CONTRIBUTION_MIN))
       })
 
       it('buyTokens stage 1, whitelisted stage 1', async () => {
@@ -440,7 +527,7 @@ describe('BluzelleTokenSale Contract', () => {
          assert.equal(await sale.methods.currentStage().call(), 1)
          await sale.methods.setWhitelistedStatus(account1, 2).send({ from: owner })
 
-         await TestLib.assertThrows(buyTokens(account1, account1, CONTRIBUTION_MIN))
+         await TestLib.assertCallFails(buyTokens(account1, account1, CONTRIBUTION_MIN))
       })
 
       it('buyTokens stage 2, whitelisted stage 2', async () => {
@@ -454,7 +541,7 @@ describe('BluzelleTokenSale Contract', () => {
       it('buyTokens stage 2, whitelisted stage 3', async () => {
          await sale.methods.setWhitelistedStatus(account1, 3).send({ from: owner })
 
-         await TestLib.assertThrows(buyTokens(account1, account1, CONTRIBUTION_MIN))
+         await TestLib.assertCallFails(buyTokens(account1, account1, CONTRIBUTION_MIN))
       })
 
       it('buyTokens stage 3, whitelisted stage 1', async () => {
@@ -464,10 +551,79 @@ describe('BluzelleTokenSale Contract', () => {
          await buyTokens(account1, account1, CONTRIBUTION_MIN)
       })
 
-      it('buyTokens stage 2, removed from whitelist', async () => {
+      it('buyTokens stage 3, after removed from whitelist', async () => {
          await sale.methods.setWhitelistedStatus(account1, 0).send({ from: owner })
 
-         await TestLib.assertThrows(buyTokens(account1, account1, CONTRIBUTION_MIN))
+         await TestLib.assertCallFails(buyTokens(account1, account1, CONTRIBUTION_MIN))
+      })
+
+      it('buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus > base bonus', async () => {
+         assert.equal(await sale.methods.currentStage().call(), 3)
+         await sale.methods.setWhitelistedStatus(account1, 1).send({ from: owner })
+
+         await sale.methods.setBonus(100).send({ from: owner })
+         await sale.methods.setStageBonus(1, 200).send({ from: owner })
+         await sale.methods.setStageBonus(2, 300).send({ from: owner })
+         await sale.methods.setStageBonus(3, 400).send({ from: owner })
+
+         await buyTokens(account1, account1, CONTRIBUTION_MIN)
+      })
+
+      it('buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus > base bonus', async () => {
+         assert.equal(await sale.methods.currentStage().call(), 3)
+         await sale.methods.setWhitelistedStatus(account1, 1).send({ from: owner })
+
+         await sale.methods.setBonus(100).send({ from: owner })
+         await sale.methods.setStageBonus(1, 200).send({ from: owner })
+         await sale.methods.setStageBonus(2, 300).send({ from: owner })
+         await sale.methods.setStageBonus(3, 400).send({ from: owner })
+
+         await buyTokens(account1, account1, CONTRIBUTION_MIN)
+
+         await sale.methods.setStageBonus(1, 0).send({ from: owner })
+         await sale.methods.setStageBonus(2, 0).send({ from: owner })
+         await sale.methods.setStageBonus(3, 0).send({ from: owner })
+      })
+
+      it('buyTokens with limit of 1000 tokens', async () => {
+         await sale.methods.setCurrentStage(1).send({ from: owner })
+         await sale.methods.setWhitelistedStatus(account3, 1).send({ from: owner })
+         await sale.methods.setMaxTokensPerAccount(1000).send({ from: owner })
+         assert.equal(await sale.methods.accountTokensPurchased(account3).call(), 0)
+
+         await buyTokens(account3, account3, CONTRIBUTION_MIN)
+
+         assert.equal(await sale.methods.accountTokensPurchased(account3).call(), 1000)
+      })
+
+      it('buyTokens with limit of 1000 tokens and someone else did a proxy purchase already', async () => {
+         await sale.methods.setWhitelistedStatus(account4, 1).send({ from: owner })
+         await sale.methods.setMaxTokensPerAccount(1000).send({ from: owner })
+         assert.equal(await sale.methods.accountTokensPurchased(account3).call(), 1000)
+         assert.equal(await sale.methods.accountTokensPurchased(account4).call(), 0)
+
+         await buyTokens(account3, account4, CONTRIBUTION_MIN)
+         await TestLib.assertCallFails(buyTokens(account4, account4, CONTRIBUTION_MIN))
+
+         assert.equal(await sale.methods.accountTokensPurchased(account3).call(), 1000)
+         assert.equal(await sale.methods.accountTokensPurchased(account4).call(), 1000)
+
+         assert.equal(await token.methods.balanceOf(account3).call(), 1000)
+         assert.equal(await token.methods.balanceOf(account4).call(), 1000)
+      })
+
+      it('buyTokens with limit of 1000 tokens and owner already assigned tokens out-of-band', async () => {
+         await sale.methods.setWhitelistedStatus(account5, 1).send({ from: owner })
+         await sale.methods.setMaxTokensPerAccount(1000).send({ from: owner })
+         assert.equal(await sale.methods.accountTokensPurchased(account5).call(), 0)
+
+         await token.methods.transfer(account5, 500).send({ from: owner })
+
+         await buyTokens(account5, account5, CONTRIBUTION_MIN)
+
+         assert.equal(await sale.methods.accountTokensPurchased(account5).call(), 1000)
+
+         assert.equal(await token.methods.balanceOf(account5).call(), 1500)
       })
    })
 })
