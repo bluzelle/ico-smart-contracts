@@ -3,8 +3,11 @@
 //
 // Copyright (c) 2017 Bluzelle Networks Pte Ltd.
 // http://www.bluzelle.com/
-//
 // The MIT Licence.
+//
+// Based on deployment scripts from Enuma Technologies.
+// Copyright (c) 2017 Enuma Technologies
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
 const fs           = require('fs')
@@ -106,7 +109,7 @@ async function run() {
    //
    // Deploy BluzelleToken
    //
-   deploymentResult = await Utils.deployContract('BluzelleToken', [ ], { from: owner })
+   deploymentResult = await Utils.deployContract(web3, 'BluzelleToken', [ ], { from: owner })
    recordTransaction('BluzelleToken.new', deploymentResult.receipt, false)
    token = deploymentResult.instance
    receipt = deploymentResult.receipt
@@ -126,8 +129,8 @@ async function run() {
    //
    // Deploy BluzelleTokenSale
    //
-   //deploymentResult = await Utils.deployContract('BluzelleTokenSaleMock', [ wallet, Moment().unix() ], { from: owner })
-   deploymentResult = await Utils.deployContract('BluzelleTokenSale', [ wallet ], { from: owner })
+   //deploymentResult = await Utils.deployContract(web3, 'BluzelleTokenSaleMock', [ wallet, Moment().unix() ], { from: owner })
+   deploymentResult = await Utils.deployContract(web3, 'BluzelleTokenSale', [ wallet ], { from: owner })
    recordTransaction('BluzelleTokenSale.new', deploymentResult.receipt)
    sale = deploymentResult.instance
    assert.equal(await sale.methods.owner().call(), owner)

@@ -24,9 +24,7 @@ async function buildWeb3(url) {
 }
 
 
-module.exports.deployContract = async (name, args, options) => {
-   const web3 = await buildWeb3()
-
+module.exports.deployContract = async (web3, name, args, options) => {
    const abi = loadAbiByName(projectRoot, name)
    const bin = loadByteCodeByName(projectRoot, name)
 
@@ -97,6 +95,8 @@ async function deployContract(web3, name, abi, bytecode, args, options) {
          console.log("TxID     : " + value)
          txid = value
       })
+
+   instance.setProvider(web3.currentProvider)
 
    const code = await web3.eth.getCode(instance.options.address)
 

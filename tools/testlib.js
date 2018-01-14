@@ -44,7 +44,7 @@ module.exports.initialize = async () => {
 
 module.exports.deploy = async (name, args, options) => {
 
-   return await Utils.deployContract(name, args, options)
+   return await Utils.deployContract(web3, name, args, options)
 }
 
 

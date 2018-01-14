@@ -70,6 +70,17 @@ module.exports.checkInitiateOwnershipTransfer = (receipt, proposedOwner) => {
 }
 
 
+module.exports.checkCancelOwnershipTransfer = (receipt) => {
+
+   TestLib.checkStatus(receipt)
+
+   assert.equal(Object.keys(receipt.events).length, 1)
+   assert.equal(typeof receipt.events.OwnershipTransferCanceled, 'object')
+   const eventArgs = receipt.events.OwnershipTransferCanceled.returnValues
+   assert.equal(Object.keys(eventArgs).length, 0)
+}
+
+
 module.exports.checkCompleteOwnershipTransfer = (receipt, newOwner) => {
 
    TestLib.checkStatus(receipt)

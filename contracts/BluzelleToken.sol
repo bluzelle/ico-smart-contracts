@@ -27,9 +27,34 @@ import "./BluzelleTokenConfig.sol";
 // ----------------------------------------------------------------------------
 contract BluzelleToken is FinalizableToken, BluzelleTokenConfig {
 
+
+   event TokensReclaimed(uint256 _amount);
+
+
    function BluzelleToken() public
       FinalizableToken(TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS, TOKEN_TOTALSUPPLY)
    {
+   }
+
+
+   // Allows the owner to reclaim tokens that have been sent to the token address itself.
+   function reclaimTokens() public onlyOwner returns (bool) {
+
+      address account = address(this);
+      uint256 amount  = balanceOf(account);
+
+      if (amount == 0) {
+         return false;
+      }
+
+      balances[account] = balances[account].sub(amount);
+      balances[owner] = balances[owner].add(amount);
+
+      Transfer(account, owner, amount);
+
+      TokensReclaimed(amount);
+
+      return true;
    }
 }
 

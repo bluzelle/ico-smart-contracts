@@ -212,8 +212,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transfer 1 to address 0', async () => {
-               assert.equal(await token.methods.transfer(0, 1).call({ from: owner }), true)
-               await Utils.checkTransfer(await token.methods.transfer(0, 1).send({ from: owner }), owner, 0, 1)
+               await TestLib.assertCallFails(token.methods.transfer(0, 1).call({ from: owner }))
             })
 
             it('transfer 1 to this', async () => {
@@ -272,8 +271,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transfer 1 to address 0', async () => {
-               assert.equal(await token.methods.transfer(0, 1).call({ from: ops }), true)
-               await Utils.checkTransfer(await token.methods.transfer(0, 1).send({ from: ops }), ops, 0, 1)
+               await TestLib.assertCallFails(token.methods.transfer(0, 1).call({ from: ops }))
             })
 
             it('transfer 1 to this', async () => {
@@ -349,7 +347,7 @@ describe('FinalizableToken Contract', () => {
 
             it('transfer 1 to other account, while balance = 0', async () => {
                const balance = new BigNumber(await token.methods.balanceOf(account1).call())
-               assert.equal(balance, 1998)
+               assert.equal(balance.toString(), 1999)
 
                await TestLib.assertCallFails(token.methods.transfer(account1, 1).call({ from: account1 }))
             })
@@ -382,15 +380,13 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 0 owner to address 0', async () => {
-               assert.equal(await token.methods.transferFrom(owner, 0, 0).call({ from: owner }), true)
-               await Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 0).send({ from: owner }), owner, 0, 0)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 0).call({ from: owner }))
             })
 
             it('transferFrom 1 owner to address 0', async () => {
                await token.methods.approve(owner, 1).send({ from: owner })
 
-               assert.equal(await token.methods.transferFrom(owner, 0, 1).call({ from: owner }), true)
-               await Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 1).send({ from: owner }), owner, 0, 1)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 1).call({ from: owner }))
             })
 
             it('transferFrom 0 owner to this', async () => {
@@ -545,15 +541,13 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 0 owner to address 0', async () => {
-               assert.equal(await token.methods.transferFrom(owner, 0, 0).call({ from: ops }), true)
-               Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 0).send({ from: ops }), owner, 0, 0)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 0).call({ from: ops }))
             })
 
             it('transferFrom 1 owner to address 0', async () => {
                await token.methods.approve(ops, 1).send({ from: owner })
 
-               assert.equal(await token.methods.transferFrom(owner, 0, 1).call({ from: ops }), true)
-               Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 1).send({ from: ops }), owner, 0, 1)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 1).call({ from: ops }))
             })
 
             it('transferFrom 0 owner to this', async () => {
@@ -855,8 +849,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transfer 1 to address 0', async () => {
-               assert.equal(await token.methods.transfer(0, 1).call({ from: owner }), true)
-               await Utils.checkTransfer(await token.methods.transfer(0, 1).send({ from: owner }), owner, 0, 1)
+               await TestLib.assertCallFails(token.methods.transfer(0, 1).call({ from: owner }))
             })
 
             it('transfer 1 to this', async () => {
@@ -922,8 +915,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transfer 1 to address 0', async () => {
-               assert.equal(await token.methods.transfer(0, 1).call({ from: ops }), true)
-               await Utils.checkTransfer(await token.methods.transfer(0, 1).send({ from: ops }), ops, 0, 1)
+               await TestLib.assertCallFails(token.methods.transfer(0, 1).call({ from: ops }))
             })
 
             it('transfer 1 to this', async () => {
@@ -977,8 +969,7 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transfer 1 to address 0', async () => {
-               assert.equal(await token.methods.transfer(0, 1).call({ from: account1 }), true)
-               await Utils.checkTransfer(await token.methods.transfer(0, 1).send({ from: account1 }), account1, 0, 1)
+               await TestLib.assertCallFails(token.methods.transfer(0, 1).call({ from: account1 }))
             })
 
             it('transfer 1 to this', async () => {
@@ -1039,15 +1030,13 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 0 owner to address 0', async () => {
-               assert.equal(await token.methods.transferFrom(owner, 0, 0).call({ from: owner }), true)
-               await Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 0).send({ from: owner }), owner, 0, 0)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 0).call({ from: owner }))
             })
 
             it('transferFrom 1 owner to address 0', async () => {
                await token.methods.approve(owner, 1).send({ from: owner })
 
-               assert.equal(await token.methods.transferFrom(owner, 0, 1).call({ from: owner }), true)
-               await Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 1).send({ from: owner }), owner, 0, 1)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 1).call({ from: owner }))
             })
 
             it('transferFrom 0 owner to this', async () => {
@@ -1202,15 +1191,13 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 0 owner to address 0', async () => {
-               assert.equal(await token.methods.transferFrom(owner, 0, 0).call({ from: ops }), true)
-               Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 0).send({ from: ops }), owner, 0, 0)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 0).call({ from: ops }))
             })
 
             it('transferFrom 1 owner to address 0', async () => {
                await token.methods.approve(ops, 1).send({ from: owner })
 
-               assert.equal(await token.methods.transferFrom(owner, 0, 1).call({ from: ops }), true)
-               Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 1).send({ from: ops }), owner, 0, 1)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 1).call({ from: ops }))
             })
 
             it('transferFrom 0 owner to this', async () => {
@@ -1365,15 +1352,13 @@ describe('FinalizableToken Contract', () => {
             })
 
             it('transferFrom 0 owner to address 0', async () => {
-               assert.equal(await token.methods.transferFrom(owner, 0, 0).call({ from: account1 }), true)
-               Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 0).send({ from: account1 }), owner, 0, 0)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 0).call({ from: account1 }))
             })
 
             it('transferFrom 1 owner to address 0', async () => {
                await token.methods.approve(account1, 1).send({ from: owner })
 
-               assert.equal(await token.methods.transferFrom(owner, 0, 1).call({ from: account1 }), true)
-               Utils.checkTransfer(await token.methods.transferFrom(owner, 0, 1).send({ from: account1 }), owner, 0, 1)
+               await TestLib.assertCallFails(token.methods.transferFrom(owner, 0, 1).call({ from: account1 }))
             })
 
             it('transferFrom 0 owner to this', async () => {

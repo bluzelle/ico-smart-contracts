@@ -2,9 +2,9 @@
 
   ERC20Token Contract
 Deploying contract ERC20Token
-TxID     : 0x9a60f587a3b756fd52f76be7e3377b3a38808d939665a2e54c78753dbf0650b0
-Address  : 0x5E3238B7f3Db413411DFB991881553524e66a4aD
-Gas used : 620094
+TxID     : 0x2c14bd9cd971af398cad3d26eb33d4d72f7f1714ba27a3c90b3ffd0799da00af
+Address  : 0x798A5866E6E67265F2c5B8e7c73B3F7ce1ad1556
+Gas used : 620030
     Construction and basic properties
       ✓ name
       ✓ symbol
@@ -19,63 +19,63 @@ Gas used : 620094
       ✓ balanceOf(this)
       ✓ balanceOf(tokenHolder)
     transfer function
-      ✓ transfer 0 tokens (45ms)
-      ✓ transfer 1 to address 0 (45ms)
-      ✓ transfer 1 to this (43ms)
+      ✓ transfer 0 tokens (49ms)
+      ✓ transfer 1 to address 0 (68ms)
+      ✓ transfer 1 to this (50ms)
       ✓ transfer > balance to other account
-      ✓ transfer balance to other account (71ms)
+      ✓ transfer balance to other account (76ms)
       ✓ transfer 1 to other account, while balance = 0
-      ✓ transfer all tokens back to token holder (130ms)
+      ✓ transfer all tokens back to token holder (98ms)
     transferFrom function
-      ✓ transferFrom 0 address 0 to other account (45ms)
+      ✓ transferFrom 0 address 0 to other account (50ms)
       ✓ transferFrom 1 address 0 to other account
-      ✓ transferFrom 0 tokenHolder to address 0 (49ms)
-      ✓ transferFrom 1 tokenHolder to address 0 (74ms)
-      ✓ transferFrom 0 tokenHolder to this (44ms)
-      ✓ transferFrom 1 tokenHolder to this (70ms)
-      ✓ transferFrom 0 tokenHolder to other account (44ms)
+      ✓ transferFrom 0 tokenHolder to address 0 (44ms)
+      ✓ transferFrom 1 tokenHolder to address 0 (80ms)
+      ✓ transferFrom 0 tokenHolder to this (69ms)
+      ✓ transferFrom 1 tokenHolder to this (82ms)
+      ✓ transferFrom 0 tokenHolder to other account (46ms)
       ✓ transferFrom 1 tokenHolder to other account, no allowance
-      ✓ transferFrom 1 tokenHolder to other account (101ms)
-      ✓ transferFrom 1 other account to this (86ms)
-      ✓ transferFrom 1 while allowance is 0 (86ms)
-      ✓ transferFrom 10 while allowance is 1 (47ms)
-      ✓ transferFrom 10 while allowance is 10 (91ms)
+      ✓ transferFrom 1 tokenHolder to other account (76ms)
+      ✓ transferFrom 1 other account to this (110ms)
+      ✓ transferFrom 1 while allowance is 0 (89ms)
+      ✓ transferFrom 10 while allowance is 1 (54ms)
+      ✓ transferFrom 10 while allowance is 10 (103ms)
       ✓ transferFrom 10 again
-      ✓ transferFrom 5 while allowance is 10 (102ms)
-      ✓ transferFrom 1 after allowance changed from 5 -> 0 (51ms)
-      ✓ transferFrom 10 + 10 + 1 while allowance is 20 (174ms)
+      ✓ transferFrom 5 while allowance is 10 (94ms)
+      ✓ transferFrom 1 after allowance changed from 5 -> 0 (50ms)
+      ✓ transferFrom 10 + 10 + 1 while allowance is 20 (149ms)
       approve function
         ✓ approve(0, 0)
         ✓ approve(0, 1)
         ✓ approve(this, 1)
         ✓ approve(other account, 0)
-        ✓ approve(other account, 1)
-        ✓ approve(other account, > balance) (124ms)
-        ✓ approve amount without approving 0 first (77ms)
+        ✓ approve(other account, 1) (54ms)
+        ✓ approve(other account, > balance) (87ms)
+        ✓ approve amount without approving 0 first (73ms)
       allowance function
         ✓ allowance(0,0)
         ✓ allowance(this,this)
         ✓ allowance(this,other account)
-        ✓ allowance(other account, yet another account) (43ms)
+        ✓ allowance(other account, yet another account) (44ms)
 
   Finalizable Contract
 Deploying contract Finalizable
-TxID     : 0xa2b1cfab3a13cf255fa58aa467b3ddee6194febb42d46a571d65e3b0364026fb
-Address  : 0x264f7FA55598bed601cB03565464Cb419FB22dE4
-Gas used : 335643
+TxID     : 0x39d343eb661ca4b7a79aa4e2db6c16a59a8be198375d2f197d98114f6d88f349
+Address  : 0x9195376F3c634048f66F0EA8FF0C1aba939EF6F8
+Gas used : 378502
     Construction and basic properties
       ✓ finalized
       ✓ owner
     finalize function
       ✓ finalize as normal
-      ✓ finalize as owner (39ms)
+      ✓ finalize as owner (40ms)
       ✓ finalize as owner, when already finalized
 
   FinalizableToken Contract
 Deploying contract FinalizableToken
-TxID     : 0xd6d33c511e2579f27aec36d1f0c7df0b692864316c0cb3a92378336f4e1ebf77
-Address  : 0x45Cde522077817E7E887Eb6AaF284d931424Ef1F
-Gas used : 1007986
+TxID     : 0x49bb581f5bc7c408e87416f1aad684fc21451bc89c6bf0ee579303f1709e63ba
+Address  : 0xC6e6DB150de33CdFc44C5EF0db8D0cd80aC07135
+Gas used : 1056544
     Construction and basic properties
       ✓ name
       ✓ symbol
@@ -96,24 +96,24 @@ Gas used : 1007986
       transfer function
         sender = owner
           ✓ transfer 0 tokens (48ms)
-          ✓ transfer 1 to address 0 (43ms)
-          ✓ transfer 1 to this (46ms)
+          ✓ transfer 1 to address 0
+          ✓ transfer 1 to this (44ms)
           ✓ transfer > balance to other account
-          ✓ transfer balance to other account (73ms)
+          ✓ transfer balance to other account (98ms)
           ✓ transfer 1 to other account, while balance = 0
-          ✓ transfer all tokens back to token holder (54ms)
+          ✓ transfer all tokens back to token holder
         sender = ops
 Deploying contract FinalizableToken
-TxID     : 0x946e0c6a82977fd5d1b055b078296467fdfea6f344d77515f4f70acc0bbff6f4
-Address  : 0x75D199cc4B51BA3CcA64D3E83Bc5018DBefaE94c
-Gas used : 1007986
-          ✓ transfer 0 tokens (49ms)
-          ✓ transfer 1 to address 0 (44ms)
-          ✓ transfer 1 to this (48ms)
+TxID     : 0x3bda7a2d2a04a9a21c6234b928154d7a23bde843bb0e8819ed83f2865fa73213
+Address  : 0xdB7394F623345713bBb52C7FdDA9002508e725bD
+Gas used : 1056544
+          ✓ transfer 0 tokens (55ms)
+          ✓ transfer 1 to address 0
+          ✓ transfer 1 to this (50ms)
           ✓ transfer > balance to other account
-          ✓ transfer balance to other account (73ms)
+          ✓ transfer balance to other account (75ms)
           ✓ transfer 1 to other account, while balance = 0
-          ✓ transfer all tokens back (39ms)
+          ✓ transfer all tokens back
         sender = normal
           ✓ transfer 0 tokens
           ✓ transfer 1 to address 0
@@ -124,188 +124,188 @@ Gas used : 1007986
           ✓ transfer all tokens back to account1
       transferFrom function
         sender = owner
-          ✓ transferFrom 0 address 0 to other account (48ms)
+          ✓ transferFrom 0 address 0 to other account (49ms)
           ✓ transferFrom 1 address 0 to other account
-          ✓ transferFrom 0 owner to address 0 (48ms)
-          ✓ transferFrom 1 owner to address 0 (73ms)
-          ✓ transferFrom 0 owner to this (43ms)
-          ✓ transferFrom 1 owner to this (99ms)
-          ✓ transferFrom 0 owner to other account (48ms)
-          ✓ transferFrom 0 ops to other account (41ms)
-          ✓ transferFrom 1 ops to other account (101ms)
+          ✓ transferFrom 0 owner to address 0
+          ✓ transferFrom 1 owner to address 0 (40ms)
+          ✓ transferFrom 0 owner to this (46ms)
+          ✓ transferFrom 1 owner to this (79ms)
+          ✓ transferFrom 0 owner to other account (72ms)
+          ✓ transferFrom 0 ops to other account (46ms)
+          ✓ transferFrom 1 ops to other account (114ms)
           ✓ transferFrom 1 owner to other account, no allowance 
-          ✓ transferFrom 1 owner to other account (74ms)
+          ✓ transferFrom 1 owner to other account (77ms)
           ✓ transferFrom 1 other account to this (84ms)
-          ✓ transferFrom 1 while allowance is 0 (133ms)
-          ✓ transferFrom 10 while allowance is 1 (61ms)
-          ✓ transferFrom 10 while allowance is 10 (118ms)
-          ✓ transferFrom 10 again
-          ✓ transferFrom 5 while allowance is 10 (94ms)
-          ✓ transferFrom 1 after allowance changed from 5 -> 0 (60ms)
-          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (200ms)
-        sender = ops
-          ✓ transferFrom 0 address 0 to other account (44ms)
-          ✓ transferFrom 1 address 0 to other account
-          ✓ transferFrom 0 owner to address 0 (43ms)
-          ✓ transferFrom 1 owner to address 0 (74ms)
-          ✓ transferFrom 0 owner to this (49ms)
-          ✓ transferFrom 1 owner to this (74ms)
-          ✓ transferFrom 0 owner to other account (43ms)
-          ✓ transferFrom 1 owner to other account, no allowance 
-          ✓ transferFrom 1 owner to other account (75ms)
-          ✓ transferFrom 0 ops to other account (47ms)
-          ✓ transferFrom 1 ops to other account (75ms)
-          ✓ transferFrom 1 other account to this (82ms)
-          ✓ transferFrom 1 while allowance is 0 (67ms)
-          ✓ transferFrom 10 while allowance is 1 (52ms)
-          ✓ transferFrom 10 while allowance is 10 (102ms)
+          ✓ transferFrom 1 while allowance is 0 (49ms)
+          ✓ transferFrom 10 while allowance is 1 (50ms)
+          ✓ transferFrom 10 while allowance is 10 (94ms)
           ✓ transferFrom 10 again
           ✓ transferFrom 5 while allowance is 10 (93ms)
-          ✓ transferFrom 1 after allowance changed from 5 -> 0 (54ms)
-          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (172ms)
+          ✓ transferFrom 1 after allowance changed from 5 -> 0 (63ms)
+          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (198ms)
+        sender = ops
+          ✓ transferFrom 0 address 0 to other account (46ms)
+          ✓ transferFrom 1 address 0 to other account
+          ✓ transferFrom 0 owner to address 0
+          ✓ transferFrom 1 owner to address 0
+          ✓ transferFrom 0 owner to this (52ms)
+          ✓ transferFrom 1 owner to this (74ms)
+          ✓ transferFrom 0 owner to other account (46ms)
+          ✓ transferFrom 1 owner to other account, no allowance 
+          ✓ transferFrom 1 owner to other account (75ms)
+          ✓ transferFrom 0 ops to other account (45ms)
+          ✓ transferFrom 1 ops to other account (76ms)
+          ✓ transferFrom 1 other account to this (83ms)
+          ✓ transferFrom 1 while allowance is 0 (50ms)
+          ✓ transferFrom 10 while allowance is 1 (45ms)
+          ✓ transferFrom 10 while allowance is 10 (92ms)
+          ✓ transferFrom 10 again (52ms)
+          ✓ transferFrom 5 while allowance is 10 (97ms)
+          ✓ transferFrom 1 after allowance changed from 5 -> 0 (45ms)
+          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (183ms)
         sender = normal 
           ✓ transferFrom 0 address 0 to other account
           ✓ transferFrom 1 address 0 to other account
           ✓ transferFrom 0 owner to address 0
-          ✓ transferFrom 1 owner to address 0 (42ms)
+          ✓ transferFrom 1 owner to address 0
           ✓ transferFrom 0 owner to this
-          ✓ transferFrom 1 owner to this
+          ✓ transferFrom 1 owner to this (39ms)
           ✓ transferFrom 0 owner to other account
           ✓ transferFrom 1 owner to other account, no allowance 
-          ✓ transferFrom 1 owner to other account (40ms)
+          ✓ transferFrom 1 owner to other account
           ✓ transferFrom 0 ops to other account
-          ✓ transferFrom 1 ops to other account
-          ✓ transferFrom 1 other account to this (61ms)
-          ✓ transferFrom 1 yet another account to another account (41ms)
-          ✓ transferFrom 1 while allowance is 0 (54ms)
-          ✓ transferFrom 10 while allowance is 1 (48ms)
-          ✓ transferFrom 10 while allowance is 10 (51ms)
+          ✓ transferFrom 1 ops to other account (43ms)
+          ✓ transferFrom 1 other account to this
+          ✓ transferFrom 1 yet another account to another account (39ms)
+          ✓ transferFrom 1 while allowance is 0 (48ms)
+          ✓ transferFrom 10 while allowance is 1 (42ms)
+          ✓ transferFrom 10 while allowance is 10 (69ms)
           ✓ transferFrom 10 again
-          ✓ transferFrom 5 while allowance is 10 (51ms)
-          ✓ transferFrom 1 after allowance changed from 10 -> 0 (54ms)
-          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (58ms)
+          ✓ transferFrom 5 while allowance is 10 (46ms)
+          ✓ transferFrom 1 after allowance changed from 10 -> 0 (60ms)
+          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (64ms)
     after finalize
       transfer function
         sender = owner
-          ✓ transfer 0 tokens (43ms)
-          ✓ transfer 1 to address 0 (41ms)
-          ✓ transfer 1 to this (44ms)
-          ✓ transfer > balance to other account
-          ✓ transfer balance to other account (78ms)
+          ✓ transfer 0 tokens (47ms)
+          ✓ transfer 1 to address 0
+          ✓ transfer 1 to this (83ms)
+          ✓ transfer > balance to other account (76ms)
+          ✓ transfer balance to other account (129ms)
           ✓ transfer 1 to other account, while balance = 0
-          ✓ transfer all tokens back
+          ✓ transfer all tokens back (44ms)
         sender = ops
 Deploying contract FinalizableToken
-TxID     : 0x2e808d82aa9f0fbe2d5d5edc21e0af2ca76e20c3a130458ad5dc69cd46cfda42
-Address  : 0x6C4348622aDB7E92c74469a8D52d72d3f4AFE003
-Gas used : 1007986
-          ✓ transfer 0 tokens (69ms)
-          ✓ transfer 1 to address 0 (40ms)
-          ✓ transfer 1 to this (45ms)
+TxID     : 0x76db4676125d402a1fb3f5cf9f9cce565cd2d1bf735037ff9c5fa9c3e2d586a1
+Address  : 0x334E29c9453a75c4920B89feD4537E409972F3e3
+Gas used : 1056544
+          ✓ transfer 0 tokens (41ms)
+          ✓ transfer 1 to address 0
+          ✓ transfer 1 to this (60ms)
           ✓ transfer > balance to other account
-          ✓ transfer balance to other account (71ms)
+          ✓ transfer balance to other account (104ms)
           ✓ transfer 1 to other account, while balance = 0
           ✓ transfer all tokens back to ops (40ms)
         sender = normal
-          ✓ transfer 0 tokens (43ms)
-          ✓ transfer 1 to address 0 (41ms)
-          ✓ transfer 1 to this (44ms)
+          ✓ transfer 0 tokens (65ms)
+          ✓ transfer 1 to address 0
+          ✓ transfer 1 to this (72ms)
           ✓ transfer > balance to other account
-          ✓ transfer balance to other account (72ms)
+          ✓ transfer balance to other account (70ms)
           ✓ transfer 1 to other account, while balance = 0
           ✓ transfer all tokens back (41ms)
       transferFrom function
         sender = owner
-          ✓ transferFrom 0 address 0 to other account (45ms)
+          ✓ transferFrom 0 address 0 to other account (42ms)
           ✓ transferFrom 1 address 0 to other account
-          ✓ transferFrom 0 owner to address 0 (40ms)
-          ✓ transferFrom 1 owner to address 0 (71ms)
-          ✓ transferFrom 0 owner to this (45ms)
-          ✓ transferFrom 1 owner to this (94ms)
-          ✓ transferFrom 0 owner to other account (43ms)
-          ✓ transferFrom 0 ops to other account (46ms)
-          ✓ transferFrom 1 ops to other account (102ms)
+          ✓ transferFrom 0 owner to address 0
+          ✓ transferFrom 1 owner to address 0
+          ✓ transferFrom 0 owner to this (50ms)
+          ✓ transferFrom 1 owner to this (76ms)
+          ✓ transferFrom 0 owner to other account (49ms)
+          ✓ transferFrom 0 ops to other account (81ms)
+          ✓ transferFrom 1 ops to other account (150ms)
           ✓ transferFrom 1 owner to other account, no allowance 
-          ✓ transferFrom 1 owner to other account (77ms)
-          ✓ transferFrom 1 other account to this (80ms)
-          ✓ transferFrom 1 while allowance is 0 (44ms)
-          ✓ transferFrom 10 while allowance is 1 (49ms)
-          ✓ transferFrom 10 while allowance is 10 (89ms)
-          ✓ transferFrom 10 again
-          ✓ transferFrom 5 while allowance is 10 (92ms)
-          ✓ transferFrom 1 after allowance changed from 5 -> 0 (59ms)
-          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (167ms)
-        sender = ops
-          ✓ transferFrom 0 address 0 to other account (47ms)
-          ✓ transferFrom 1 address 0 to other account
-          ✓ transferFrom 0 owner to address 0 (71ms)
-          ✓ transferFrom 1 owner to address 0 (68ms)
-          ✓ transferFrom 0 owner to this (48ms)
-          ✓ transferFrom 1 owner to this (73ms)
-          ✓ transferFrom 0 owner to other account (41ms)
-          ✓ transferFrom 1 owner to other account, no allowance 
-          ✓ transferFrom 1 owner to other account (68ms)
-          ✓ transferFrom 0 ops to other account (44ms)
-          ✓ transferFrom 1 ops to other account (72ms)
-          ✓ transferFrom 1 other account to this (83ms)
-          ✓ transferFrom 1 while allowance is 0 (44ms)
-          ✓ transferFrom 10 while allowance is 1 (52ms)
-          ✓ transferFrom 10 while allowance is 10 (89ms)
+          ✓ transferFrom 1 owner to other account (80ms)
+          ✓ transferFrom 1 other account to this (92ms)
+          ✓ transferFrom 1 while allowance is 0 (48ms)
+          ✓ transferFrom 10 while allowance is 1 (53ms)
+          ✓ transferFrom 10 while allowance is 10 (96ms)
           ✓ transferFrom 10 again
           ✓ transferFrom 5 while allowance is 10 (90ms)
-          ✓ transferFrom 1 after allowance changed from 5 -> 0 (50ms)
-          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (165ms)
-        sender = normal 
-          ✓ transferFrom 0 address 0 to other account (51ms)
+          ✓ transferFrom 1 after allowance changed from 5 -> 0 (60ms)
+          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (204ms)
+        sender = ops
+          ✓ transferFrom 0 address 0 to other account (67ms)
           ✓ transferFrom 1 address 0 to other account
-          ✓ transferFrom 0 owner to address 0 (46ms)
-          ✓ transferFrom 1 owner to address 0 (74ms)
-          ✓ transferFrom 0 owner to this (41ms)
-          ✓ transferFrom 1 owner to this (71ms)
-          ✓ transferFrom 0 owner to other account (48ms)
+          ✓ transferFrom 0 owner to address 0
+          ✓ transferFrom 1 owner to address 0 (38ms)
+          ✓ transferFrom 0 owner to this (51ms)
+          ✓ transferFrom 1 owner to this (84ms)
+          ✓ transferFrom 0 owner to other account (45ms)
           ✓ transferFrom 1 owner to other account, no allowance 
-          ✓ transferFrom 1 owner to other account (70ms)
-          ✓ transferFrom 0 ops to other account (41ms)
-          ✓ transferFrom 1 ops to other account (72ms)
-          ✓ transferFrom 1 other account to this (80ms)
-          ✓ transferFrom 1 while allowance is 0 (48ms)
-          ✓ transferFrom 10 while allowance is 1 (46ms)
-          ✓ transferFrom 10 while allowance is 10 (87ms)
+          ✓ transferFrom 1 owner to other account (75ms)
+          ✓ transferFrom 0 ops to other account (53ms)
+          ✓ transferFrom 1 ops to other account (86ms)
+          ✓ transferFrom 1 other account to this (93ms)
+          ✓ transferFrom 1 while allowance is 0 (46ms)
+          ✓ transferFrom 10 while allowance is 1 (55ms)
+          ✓ transferFrom 10 while allowance is 10 (125ms)
           ✓ transferFrom 10 again
-          ✓ transferFrom 5 while allowance is 10 (88ms)
-          ✓ transferFrom 1 after allowance changed from 5 -> 0 (44ms)
-          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (214ms)
+          ✓ transferFrom 5 while allowance is 10 (170ms)
+          ✓ transferFrom 1 after allowance changed from 5 -> 0 (79ms)
+          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (193ms)
+        sender = normal 
+          ✓ transferFrom 0 address 0 to other account (61ms)
+          ✓ transferFrom 1 address 0 to other account
+          ✓ transferFrom 0 owner to address 0
+          ✓ transferFrom 1 owner to address 0 (41ms)
+          ✓ transferFrom 0 owner to this (60ms)
+          ✓ transferFrom 1 owner to this (81ms)
+          ✓ transferFrom 0 owner to other account (45ms)
+          ✓ transferFrom 1 owner to other account, no allowance 
+          ✓ transferFrom 1 owner to other account (79ms)
+          ✓ transferFrom 0 ops to other account (57ms)
+          ✓ transferFrom 1 ops to other account (78ms)
+          ✓ transferFrom 1 other account to this (114ms)
+          ✓ transferFrom 1 while allowance is 0 (69ms)
+          ✓ transferFrom 10 while allowance is 1 (138ms)
+          ✓ transferFrom 10 while allowance is 10 (150ms)
+          ✓ transferFrom 10 again (41ms)
+          ✓ transferFrom 5 while allowance is 10 (172ms)
+          ✓ transferFrom 1 after allowance changed from 5 -> 0 (110ms)
+          ✓ transferFrom 10 + 10 + 1 while allowance is 20 (312ms)
     approve function
-      ✓ approve(0, 0)
+      ✓ approve(0, 0) (46ms)
       ✓ approve(0, 1)
       ✓ approve(this, 1)
       ✓ approve(other account, 0)
       ✓ approve(other account, 1)
-      ✓ approve(other account, > balance) (87ms)
-      ✓ approve amount without approving 0 first (66ms)
+      ✓ approve(other account, > balance) (117ms)
+      ✓ approve amount without approving 0 first (77ms)
     allowance function
       ✓ allowance(0,0)
       ✓ allowance(this,this)
       ✓ allowance(this,other account)
-      ✓ allowance(other account, yet another account)
+      ✓ allowance(other account, yet another account) (43ms)
     finalize function
 Deploying contract FinalizableToken
-TxID     : 0x6ebb3f112eeb7d5c4183aac992bf58b47bb6e5cd1618e13fdc53a049d4862a20
-Address  : 0xE23bcA48d04491cb3Eef622865a2c31223f90307
-Gas used : 1007986
+TxID     : 0x0e05051af500a8d8312207887a80c24b6edf92b3f576eab6c6899c9b95031d06
+Address  : 0x01D13493b8EaF6c335343EbB257077e41d537EF6
+Gas used : 1056544
       ✓ other account cannot call finalize
-      ✓ ops cannot call finalize
-      ✓ owner can call finalize (62ms)
+      ✓ ops cannot call finalize (40ms)
+      ✓ owner can call finalize (82ms)
 
   FlexibleTokenSale Contract
 Deploying contract FinalizableToken
-TxID     : 0x860485aa9a1c8bd96a25ae8e6f1ec42ae2c82bfeb8ad956d1d630331ef88f650
-Address  : 0xDAFA4dCdfa4663F2444b94aa842DbE564ce44Dcf
-Gas used : 1007986
+TxID     : 0x6e2a734fafc8e9673baa58de256422538f4c3308cb96b23c3e4407bed3c9c8ea
+Address  : 0xa372929b4D61135b33c4a99fE43E2293cc712d88
+Gas used : 1056544
 Deploying contract FlexibleTokenSale
-TxID     : 0xa25961f6bd8562a9c05796262faa97855a0b8fadc350820f6464a6577cd28ca8
-Address  : 0xf68e24016E432b5FfC45C20D78F9aba21f3A3ba8
-Gas used : 1627834
+TxID     : 0x0ffef3a94056e2e06735c2e3704c4e9dbbfec662e84d503ed47af729177d0e7d
+Address  : 0x1f9C59476f6Ec43a6eAA15d5d40057D2Fa786Cf7
+Gas used : 1649702
     Construction and basic properties
       ✓ startTime
       ✓ endTime
@@ -320,7 +320,7 @@ Gas used : 1627834
       ✓ totalEtherCollected
       ✓ finalized
       ✓ opsAddress
-      ✓ owner
+      ✓ owner (38ms)
       ✓ proposedOwner
     isOwner (inherited)
       ✓ isOwner(owner)
@@ -345,33 +345,33 @@ Gas used : 1627834
       ✓ initialize(wallet)
       ✓ initialize as normal
       ✓ initialize as ops
-      ✓ initialize as owner (57ms)
+      ✓ initialize as owner (112ms)
     setWalletAddress
       ✓ setWalletAddress(0)
-      ✓ setWalletAddress(this)
+      ✓ setWalletAddress(this) (43ms)
       ✓ setWalletAddress(owner)
       ✓ setWalletAddress(ops)
-      ✓ setWalletAddress(wallet) (61ms)
+      ✓ setWalletAddress(wallet) (72ms)
       ✓ setWalletAddress(token)
       ✓ setWalletAddress as normal
       ✓ setWalletAddress as ops
-      ✓ setWalletAddress as owner (98ms)
+      ✓ setWalletAddress as owner (172ms)
     setMaxTokensPerAccount
-      ✓ setMaxTokensPerAccount(0) (40ms)
-      ✓ setMaxTokensPerAccount(1)
-      ✓ setMaxTokensPerAccount(100,000,000 * 10**18) (40ms)
+      ✓ setMaxTokensPerAccount(0) (47ms)
+      ✓ setMaxTokensPerAccount(1) (74ms)
+      ✓ setMaxTokensPerAccount(100,000,000 * 10**18) (51ms)
       ✓ setMaxTokensPerAccount as ops
       ✓ setMaxTokensPerAccount as normal
     setTokensPerKEther
       ✓ setTokensPerKEther(0)
-      ✓ setTokensPerKEther(1) (39ms)
+      ✓ setTokensPerKEther(1) (72ms)
       ✓ setTokensPerKEther(100,000,000 * 10**18)
       ✓ setTokensPerKEther as ops
       ✓ setTokensPerKEther as normal
     setBonus
-      ✓ setBonus(0) (38ms)
+      ✓ setBonus(0) (39ms)
       ✓ setBonus(750)
-      ✓ setBonus(1500) (40ms)
+      ✓ setBonus(1500) (38ms)
       ✓ setBonus(10000)
       ✓ setBonus(10001)
       ✓ setBonus as ops
@@ -379,160 +379,160 @@ Gas used : 1627834
     setSaleWindow
       ✓ setSaleWindow(0, 0)
       ✓ setSaleWindow(0, 1)
-      ✓ setSaleWindow(1, 2)
-      ✓ setSaleWindow(now - 1000, now - 500) (68ms)
+      ✓ setSaleWindow(1, 2) (40ms)
+      ✓ setSaleWindow(now - 1000, now - 500) (75ms)
       ✓ setSaleWindow(now, now)
-      ✓ setSaleWindow(now, now + 1)
-      ✓ setSaleWindow(now + 1 month, now + 2 months) (41ms)
+      ✓ setSaleWindow(now, now + 1) (78ms)
+      ✓ setSaleWindow(now + 1 month, now + 2 months) (38ms)
       ✓ setSaleWindow as ops
       ✓ setSaleWindow as normal
     suspend and resume
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0x91a38f0779fd12aa59972d37be8821678137eaf1d472a9cfd31608bedf9c3c27
-Address  : 0xA30fe0F715cc0d9148c5bcF474404Cca0c8C6919
-Gas used : 1677384
+TxID     : 0xd9258ef5bfd88d4039ebe13787a7536316cbe31d94627082ed00c7530552d83c
+Address  : 0xb4e7306698285e6A39665d1C3b7371b6E3Dc884B
+Gas used : 1699124
       ✓ suspend / resume before sale (119ms)
-      ✓ suspend / resume during sale (119ms)
-      ✓ suspend / resume after sale (121ms)
-      ✓ suspend before sale, resume during sale (143ms)
-      ✓ suspend during sale, resume after sale (144ms)
-      ✓ suspend when suspended (165ms)
-      ✓ resume when resumed (92ms)
-      ✓ suspend / resume as ops (54ms)
-      ✓ suspend / resume as normal (58ms)
+      ✓ suspend / resume during sale (125ms)
+      ✓ suspend / resume after sale (136ms)
+      ✓ suspend before sale, resume during sale (225ms)
+      ✓ suspend during sale, resume after sale (163ms)
+      ✓ suspend when suspended (270ms)
+      ✓ resume when resumed (123ms)
+      ✓ suspend / resume as ops (81ms)
+      ✓ suspend / resume as normal (108ms)
     finalize
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0xffc3937018e7933d00a7e358073a33a012c54179a91f0f00f5b776a81fca08cd
-Address  : 0xFf182f18CFdFc83f258858626382079f7fD69b14
-Gas used : 1677384
+TxID     : 0x8fba15245f538817df16e3a4867e9e4ce539e8059e8ef5863de8f0e389439737
+Address  : 0x2743b73CB4D210e7dBe5f2a60a1045Cdb106F7d1
+Gas used : 1699124
       ✓ finalize as normal
-      ✓ finalize as ops
-      ✓ finalize as owner (72ms)
+      ✓ finalize as ops (50ms)
+      ✓ finalize as owner (133ms)
     reclaimTokens
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0x7ada60ee9bfddb8da03d583e97226cb5d776ab09ab0e6606ccaebfdbb0e1b944
-Address  : 0xF2b8058b4e2195e55dF338C79c47f4525CFc2961
-Gas used : 1677384
+TxID     : 0x34ab678a69bb19e2a1d46e83e2dfbe606052906cd6f1f0b0c101e15a1aa39e15
+Address  : 0xcDEE8ec59d898FF4449E3C10C67A9fc883D343F2
+Gas used : 1699124
       before finalize
-        ✓ reclaimTokens as owner (111ms)
+        ✓ reclaimTokens as owner (131ms)
       after finalize
         ✓ reclaimTokens as normal
         ✓ reclaimTokens as ops
-        ✓ reclaimTokens as owner (111ms)
+        ✓ reclaimTokens as owner (122ms)
         ✓ reclaimTokens as owner when 0 balance (42ms)
 
   FlexibleTokenSale End-To-End Scenario
     Initial deployment
 Deploying contract FinalizableToken
-TxID     : 0xfd9a33fcb85105bb967c16c9bb28944cf56d4cfe908e3a16bb5958cb7ea46704
-Address  : 0xF6a28414Dd1A8B6671eE14164a6630643119C69f
-Gas used : 1009202
-      ✓ Deploy the token contract (52ms)
+TxID     : 0x70d8be0cb920a8ffd2922c14861bbf305573ccb50a4c69950e9478f7870876db
+Address  : 0x6F0dcb3D797C53Bfa8ed8d52461493C671fEdc1B
+Gas used : 1057760
+      ✓ Deploy the token contract (55ms)
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0xca02be7c5db6e9ba2b33fc2f405752ae6532133a38cb65ab3cfd53a7dece46d8
-Address  : 0x3eeEf2daf4B18209EB3b3E74078B14E6BcF5F744
-Gas used : 1677384
-      ✓ Deploy the sale contract (59ms)
-      ✓ Initialize the sale contract (77ms)
+TxID     : 0xe8612555a1f809ef2c45dea591daab5b95f102678a0e035838aaf95858d75485
+Address  : 0xaD3065E120e880eE78e373316790a19Cf1FCb43d
+Gas used : 1699124
+      ✓ Deploy the sale contract (118ms)
+      ✓ Initialize the sale contract (130ms)
       ✓ Set the ops key of the token to the sale contract
-      ✓ Set the ops key of the sale to a ops key (38ms)
+      ✓ Set the ops key of the sale to a ops key
     Before presale
-      ✓ Set the sale window (46ms)
+      ✓ Set the sale window (47ms)
       ✓ Set bonus amount
-      ✓ Set per account contribution limit
-      ✓ Set the token price (42ms)
-      ✓ Give tokens to the sale contract (39ms)
+      ✓ Set per account contribution limit (44ms)
+      ✓ Set the token price (46ms)
+      ✓ Give tokens to the sale contract (102ms)
     During Presale
-      ✓ Contributor makes purchase (245ms)
-      ✓ Contributor makes purchase on behalf of another account (244ms)
+      ✓ Contributor makes purchase (456ms)
+      ✓ Contributor makes purchase on behalf of another account (283ms)
       ✓ Suspend the sale
-      ✓ Change the bonus amount to 1500 (15.00% bonus) (38ms)
+      ✓ Change the bonus amount to 1500 (15.00% bonus)
       ✓ Resume the sale
-      ✓ Contributor makes purchase (271ms)
-      ✓ Change the time window to end the presale early (162ms)
+      ✓ Contributor makes purchase (331ms)
+      ✓ Change the time window to end the presale early (159ms)
     After Presale
       ✓ Reclaim unsold tokens (79ms)
     Before Public Sale
-      ✓ Set new time window for the public sale (42ms)
+      ✓ Set new time window for the public sale (69ms)
       ✓ Set a new bonus amount
       ✓ Set per account contribution limit
-      ✓ Set the token price (50ms)
-      ✓ Give tokens to the sale contract (41ms)
+      ✓ Set the token price
+      ✓ Give tokens to the sale contract (45ms)
     During Public Sale
-      ✓ Contributor buys max allowed tokens (304ms)
+      ✓ Contributor buys max allowed tokens (383ms)
       ✓ Raise per account contribution limit
-      ✓ Contributor buys max allowed tokens (306ms)
+      ✓ Contributor buys max allowed tokens (349ms)
       ✓ Remove per account contribution limit
-      ✓ Contributor buys all remaining tokens (339ms)
+      ✓ Contributor buys all remaining tokens (309ms)
     After Public Sale
-      ✓ Reclaim unsold tokens (63ms)
-      ✓ Finalize the token (47ms)
-      ✓ Finalize the sale (49ms)
+      ✓ Reclaim unsold tokens (155ms)
+      ✓ Finalize the token (85ms)
+      ✓ Finalize the sale (87ms)
 
   FlexibleTokenSale Contract - buyTokens tests
 Deploying contract FinalizableToken
-TxID     : 0x1e532ec7729b654367c3ccb0115db59b4bc5b48940e544cd926a744ceaa42b9c
-Address  : 0xb17d7843F36BC1B46250B990A00f4eeeB24c747a
-Gas used : 1008050
+TxID     : 0x9489f4660d1de2f6c9a19339d5b9c26cbb1439694013543efebd1ac40b67f5ae
+Address  : 0xb8aB70f3075C5FfF85b90559557b11D7AEafDb02
+Gas used : 1056608
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0x28461e2697242fe3133814e45d4f12961c8c25088fa5415decb0cecb8bd5a402
-Address  : 0x5c30e193A9B80167Ae9B0665E00C3A981Ba74F12
-Gas used : 1677384
+TxID     : 0xf6dc0f94d38d7eef05807ba2ff0da5f90e1864bab97e74b1b60de5b0daf95229
+Address  : 0x6B71f39A5C771C8b56a0e84727976588aA13c59D
+Gas used : 1699124
     buyTokens
-      ✓ buyTokens as normal (262ms)
-      ✓ buyTokens as ops (245ms)
-      ✓ buyTokens as owner (241ms)
-      ✓ buyTokens for another account (239ms)
-      ✓ buyTokens for this (106ms)
-      ✓ buyTokens for wallet (269ms)
+      ✓ buyTokens as normal (437ms)
+      ✓ buyTokens as ops (378ms)
+      ✓ buyTokens as owner (399ms)
+      ✓ buyTokens for another account (596ms)
+      ✓ buyTokens for this (186ms)
+      ✓ buyTokens for wallet (245ms)
       ✓ buyTokens for owner (239ms)
-      ✓ buyTokens for ops (234ms)
-      ✓ buyTokens for token contract (110ms)
-      ✓ buyTokens with 0 ETH (108ms)
-      ✓ buyTokens with 1 wei (105ms)
-      ✓ buyTokens with minimum contribution - 1 wei (133ms)
-      ✓ buyTokens with minimum contribution (247ms)
-      ✓ buyTokens with more ETH than maxTokensPerAccount allows (349ms)
-      ✓ buyTokens with bonus = 0 (267ms)
-      ✓ buyTokens with bonus = 755 (293ms)
-      ✓ buyTokens with bonus = 10000 (268ms)
-      ✓ buyTokens with more ETH than left for sale (293ms)
+      ✓ buyTokens for ops (281ms)
+      ✓ buyTokens for token contract (108ms)
+      ✓ buyTokens with 0 ETH (211ms)
+      ✓ buyTokens with 1 wei (185ms)
+      ✓ buyTokens with minimum contribution - 1 wei (189ms)
+      ✓ buyTokens with minimum contribution (314ms)
+      ✓ buyTokens with more ETH than maxTokensPerAccount allows (381ms)
+      ✓ buyTokens with bonus = 0 (407ms)
+      ✓ buyTokens with bonus = 755 (371ms)
+      ✓ buyTokens with bonus = 10000 (289ms)
+      ✓ buyTokens with more ETH than left for sale (449ms)
 Deploying contract FinalizableToken
-TxID     : 0x7b0e003e15dd39502b07b6125604df8ea435c22f619d2172c8981f175ed15b89
-Address  : 0x44589BcB8Fb1Da2C0991a20018abC86bE9FE55eF
-Gas used : 1008050
+TxID     : 0x74879a0abe7887cf4b8453a18603e3247c7a574ab6e83d973e57d438d2404098
+Address  : 0x48E69D16972698158a98288abD05e16c75ba5318
+Gas used : 1056608
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0x0f844ecc0f861af8894412342f00ade743212b0708f93f762c042f78b15de9e7
-Address  : 0xa483Ed26b14db6c12346FC8e6197B20B87579bB1
-Gas used : 1677384
-      ✓ buyTokens with less tokens left than maxTokensPerAccount (616ms)
+TxID     : 0x71a899579ca7cc4e9b0a1356e6be892e32f794a2f7f91f6574073d8bb44087e1
+Address  : 0x026dD42575048Bc3310542e103bb8979dD6c9aE3
+Gas used : 1699124
+      ✓ buyTokens with less tokens left than maxTokensPerAccount (726ms)
 Deploying contract FinalizableToken
-TxID     : 0x9fb5fb4c19a651ef2f90228ed61c6bd2fc48989e0842d5b4db05698396a0e8b0
-Address  : 0x0De7d76574A5Fc586A71F843f80bFd105f97126c
-Gas used : 1008050
+TxID     : 0x93921b2c327da1fcbb531b3cb549562324f279068572e3fec011579cd374b952
+Address  : 0x62A73C7D6006CF6B8541222B4824aD729718a685
+Gas used : 1056608
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0x414afdadc30eeb59f12a1020fd022a4497a6f3ce001af6682ca0fa2ab3e3b08e
-Address  : 0xE06CFD6699BC62B84f0061Fe9363FfFCC9cD977D
-Gas used : 1677384
-      ✓ buyTokens with enough ETH to buy all tokens in a single transaction, and more... (552ms)
-      ✓ buyTokens with an additional minimum contribution (113ms)
+TxID     : 0xe96c4bc17e020fd1cb8d47355ab965690f73dbc65fedfe305d58dabef1a2f7b1
+Address  : 0xD3f70fA3879bA3792ca18bc7f96dD1A6d67927ef
+Gas used : 1699124
+      ✓ buyTokens with enough ETH to buy all tokens in a single transaction, and more... (704ms)
+      ✓ buyTokens with an additional minimum contribution (109ms)
 Deploying contract FinalizableToken
-TxID     : 0x4b0eeccdc66efe9650258d018c6b8ea3b13749c32287336fbe80bb3ba54e93dd
-Address  : 0xf732224fA6E973701970D3FF6e6FB3c08bF27CA2
-Gas used : 1008050
+TxID     : 0x91afb614195626fce02656ccc7749d26522903a9088b23267cac7c7412d6848a
+Address  : 0xF697550E139143a861a6F53baEb70412FD05499a
+Gas used : 1056608
 Deploying contract FlexibleTokenSaleMock
-TxID     : 0x3dcef5c23523598c7076c735b92ef05a28bbb2b5540634496a1811662d4f4f6d
-Address  : 0x66637Cb78E3685e489d06d591EEF6083d43AA27B
-Gas used : 1677384
-      ✓ buyTokens before start time (409ms)
-      ✓ buyTokens during sale time (300ms)
-      ✓ buyTokens after end time (133ms)
-      ✓ buyTokens after finalized (158ms)
+TxID     : 0xcd00a8f85ed65caf2070255c7303314194e45cd405dba5f5083614716e1c8dc4
+Address  : 0x3f09c64e205363524814931c84e7A4ED6d7b831E
+Gas used : 1699124
+      ✓ buyTokens before start time (661ms)
+      ✓ buyTokens during sale time (404ms)
+      ✓ buyTokens after end time (137ms)
+      ✓ buyTokens after finalized (157ms)
 
   Math Library
 Deploying contract MathTest
-TxID     : 0xa00a00afaeeca57197b9af8649889f483a6a3926f4a08714f68fa70ea0ea179c
-Address  : 0xb1615b35F3872D916698d05fdEA54Fa2829e0229
+TxID     : 0xdd9001d73ef1f0bb1edd18669f65e9c9fbc1bcd27a5603477866e28eaf5efbe1
+Address  : 0x0b49B17ED28B97d52196Bf40Dfc8076B05963453
 Gas used : 168890
     add
       ✓ add(0, 0)
@@ -586,9 +586,9 @@ Gas used : 168890
 
   Owned Contract
 Deploying contract OpsManaged
-TxID     : 0xe50a9e8a8661af9d7c208a1583ec8e00b8893c72a499f193e6c602533712df72
-Address  : 0x3a623EA7645fC49C03E2E8EA1096B49d25D97180
-Gas used : 379989
+TxID     : 0x23e89ccaed29c93b3153a74ea4661ae20584d455534a7e3ed3c7c33f9a1929b8
+Address  : 0x938e3d009906443F199778Fb4E7A7e769d298BFf
+Gas used : 422912
     Construction and basic properties
       ✓ opsAddress
       ✓ owner (inherited)
@@ -624,19 +624,19 @@ Gas used : 379989
       ✓ isOwner(owner)
       ✓ isOwner(ops)
     setOpsAddress
-      ✓ setOpsAddress(0) (48ms)
+      ✓ setOpsAddress(0) (44ms)
       ✓ setOpsAddress(this)
       ✓ setOpsAddress(owner)
       ✓ setOpsAddress(other account) as non-owner
-      ✓ setOpsAddress(other account) as ops (49ms)
-      ✓ setOpsAddress(other account) as owner (45ms)
-      ✓ setOpsAddress(other account) as owner and then set owner to that same address (158ms)
+      ✓ setOpsAddress(other account) as ops (42ms)
+      ✓ setOpsAddress(other account) as owner (49ms)
+      ✓ setOpsAddress(other account) as owner and then set owner to that same address (148ms)
 
   Owned Contract
 Deploying contract Owned
-TxID     : 0x2070f9fa257c840f7ad5cf0744d395aefeb0c0adbbe089dfd0f53c61c4d193c4
-Address  : 0xF5C6B8323Bfd6832725D1eCA8eCB0578E6076DaA
-Gas used : 264774
+TxID     : 0x3c7b9cdc70425ab132cadfbb595b8c02647782b624cfde1d536c34d998b10333
+Address  : 0xC11d91e61B8C10a236C8eb3301c30f4a69327adD
+Gas used : 307696
     Construction and basic properties
       ✓ owner
       ✓ proposedOwner
@@ -651,74 +651,99 @@ Gas used : 264774
       ✓ initiateOwnershipTransfer(this)
       ✓ initiateOwnershipTransfer(owner)
       ✓ initiateOwnershipTransfer(other account), as non-owner
-      ✓ initiateOwnershipTransfer(other account), as owner (80ms)
+      ✓ initiateOwnershipTransfer(other account), as owner (73ms)
+    cancelOwnershipTransfer
+      ✓ cancelOwnershipTransfer as normal
+      ✓ cancelOwnershipTransfer when no pending transfer
+      ✓ cancelOwnershipTransfer when pending transfer, as proposed owner (40ms)
+      ✓ cancelOwnershipTransfer when pending transfer, as owner (46ms)
     completeOwnershipTransfer
       ✓ completeOwnershipTransfer(owner)
       ✓ completeOwnershipTransfer(yet another account)
-      ✓ completeOwnershipTransfer(other account), as owner (77ms)
+      ✓ completeOwnershipTransfer(other account), as owner (71ms)
 
   Bluzelle End-To-End Scenario
     Initial deployment
 Deploying contract BluzelleToken
-TxID     : 0x87975f6b8db34239b8349ebda69ca6e65de334be5ace443522cd8401126baa21
-Address  : 0x2C42ebA2B1aA8645716E4A647e8AF742534bbDBE
-Gas used : 1082317
-      ✓ Deploy the token contract (80ms)
+TxID     : 0x268fea06c33f2edce077de718a18ab803679f03224d9a94eb72b172f5414890b
+Address  : 0x91B49942307d1AC685eC79EAe5B8e23B255AC6E2
+Gas used : 1204994
+      ✓ Deploy the token contract (59ms)
 Deploying contract BluzelleTokenSaleMock
-TxID     : 0x11c2837f8433e457cae8b579e5db1749af6101a4e3ef7b0d3c010d01e3a9465a
-Address  : 0xDdA3e1C7160A7899701148B720B6f417a54d00b7
-Gas used : 2229935
-      ✓ Deploy the sale contract (69ms)
-      ✓ Initialize the sale contract (62ms)
-      ✓ Set the ops key of the token to the sale contract (39ms)
-      ✓ Set the ops key of the sale to a ops key (41ms)
+TxID     : 0x3108093a6fd581dea06bb5ecd345a8687734549eedb198f74c3a77c702bdd6cf
+Address  : 0xB2d70190e9310d6251ADbF77cAd41b5218039eC5
+Gas used : 2251676
+      ✓ Deploy the sale contract (68ms)
+      ✓ Initialize the sale contract (87ms)
+      ✓ Set the ops key of the token to the sale contract
+      ✓ Set the ops key of the sale to a ops key (38ms)
     Before presale
-      ✓ Update the whitelist 1-by-1 (89ms)
-      ✓ Update the whitelist in batch (98ms)
-      ✓ Set the sale window (51ms)
-      ✓ Set bonus amount
-      ✓ Set per account contribution limit (39ms)
-      ✓ Set the token price
-      ✓ Give tokens to the sale contract (44ms)
+      ✓ Update the whitelist 1-by-1 (96ms)
+      ✓ Update the whitelist in batch (167ms)
+      ✓ Set the sale window (68ms)
+      ✓ Set bonus amount (44ms)
+      ✓ Set per account contribution limit (45ms)
+      ✓ Set the token price (40ms)
+      ✓ Give tokens to the sale contract (47ms)
     During Presale
-      ✓ Contributor makes purchase (294ms)
-      ✓ Add another person to the whitelist (38ms)
-      ✓ Contributor makes purchase on behalf of another whitelisted account (323ms)
-      ✓ Suspend the sale (41ms)
+      ✓ Contributor makes purchase (316ms)
+      ✓ Add another person to the whitelist
+      ✓ Contributor makes purchase on behalf of another whitelisted account (295ms)
+      ✓ Suspend the sale (42ms)
       ✓ Change the bonus amount to 1500 (15.00% bonus)
-      ✓ Resume the sale (39ms)
-      ✓ Contributor makes purchase (292ms)
-      ✓ Change the time window to end the presale early (203ms)
+      ✓ Resume the sale
+      ✓ Contributor makes purchase (294ms)
+      ✓ Change the time window to end the presale early (229ms)
     After Presale
-      ✓ Reclaim unsold tokens (82ms)
+      ✓ Reclaim unsold tokens (85ms)
     Before Public Sale
-      ✓ Set new time window for the public sale (50ms)
+      ✓ Set new time window for the public sale (46ms)
       ✓ Set a new bonus amount
-      ✓ Update whitelist with new applicants (54ms)
-      ✓ Set per account contribution limit (64ms)
+      ✓ Update whitelist with new applicants (57ms)
+      ✓ Set per account contribution limit
       ✓ Set the token price
-      ✓ Give tokens to the sale contract (40ms)
+      ✓ Give tokens to the sale contract
       ✓ Set current stage
     During Public Sale
-      ✓ Contributor buys max allowed tokens (331ms)
+      ✓ Contributor buys max allowed tokens (318ms)
       ✓ Raise per account contribution limit
-      ✓ Contributor buys max allowed tokens (again) (323ms)
+      ✓ Contributor buys max allowed tokens (again) (324ms)
       ✓ Remove per account contribution limit
-      ✓ Contributor buys all remaining tokens (351ms)
+      ✓ Contributor buys all remaining tokens (350ms)
     After Public Sale
-      ✓ Reclaim unsold tokens (69ms)
-      ✓ Finalize the token (50ms)
+      ✓ Reclaim unsold tokens (62ms)
+      ✓ Finalize the token (47ms)
       ✓ Finalize the sale (48ms)
+
+  BluzelleToken Contract
+Deploying contract BluzelleToken
+TxID     : 0xb89f7f1bca7650ffb561b73def083662ecc3ee070e3aabb488a0426039e8820c
+Address  : 0xf617622327b7a906d15b1B46f90A398Feb8AB085
+Gas used : 1204994
+    Construction and basic properties
+      ✓ name
+      ✓ symbol
+      ✓ decimals
+      ✓ totalSupply
+      ✓ finalized
+      ✓ opsAddress
+      ✓ owner
+      ✓ proposedOwner
+    reclaimTokens
+      ✓ reclaimTokens when 0 to reclaim
+      ✓ reclaimTokens when > 0 to reclaim (105ms)
+      ✓ reclaimTokens again
+      ✓ reclaimTokens as normal
 
   BluzelleTokenSale Contract
 Deploying contract BluzelleToken
-TxID     : 0x81c5878b85b1bfbb975a4e86f05e7c227847ed2802690577d26b628ddbbb7112
-Address  : 0x055590B3f1Dec8310B0A5a902b60ee932660518b
-Gas used : 1082317
+TxID     : 0xf4b3fcde7ba5fa9f3373745587ec5d4af520458340ed087d0526b5a7a43815d7
+Address  : 0xBDC0F51B9a6E1A961470d48966f440122A4b1F54
+Gas used : 1204994
 Deploying contract BluzelleTokenSaleMock
-TxID     : 0x0a432ab9ffbf3b28d6dbc67ce18430109456a98da8372442f0e3df056ec6d378
-Address  : 0x1AEbC8900f7749B137DB2c2232b0F1Bcb52AF18D
-Gas used : 2229935
+TxID     : 0x1724e1859502c9ea17a0d37d37c6d551a0cc2e77c6356a7a993f9f09afadcc9e
+Address  : 0xAf64AF496F645a8a003f5D408eE4A1b836f79f18
+Gas used : 2251676
     Construction and basic properties
       ✓ startTime
       ✓ endTime
@@ -742,65 +767,65 @@ Gas used : 2229935
     setCurrentStage
       ✓ setCurrentStage(0)
       ✓ setCurrentStage(1)
-      ✓ setCurrentStage(2) (60ms)
-      ✓ setCurrentStage(1) (53ms)
-      ✓ setCurrentStage(0)
-      ✓ setCurrentStage(100) (45ms)
+      ✓ setCurrentStage(2) (55ms)
+      ✓ setCurrentStage(1) (50ms)
+      ✓ setCurrentStage(0) (41ms)
+      ✓ setCurrentStage(100) (43ms)
       ✓ setCurrentStage as ops
       ✓ setCurrentStage as normal
     setStageBonus
       ✓ setStageBonus(0, 5)
-      ✓ setStageBonus(1, 5) (46ms)
+      ✓ setStageBonus(1, 5) (50ms)
       ✓ setStageBonus(1, 10000) (52ms)
       ✓ setStageBonus(1, 10001)
-      ✓ setStageBonus(2, 750) (83ms)
-      ✓ setStageBonus(1, 0) (52ms)
+      ✓ setStageBonus(2, 750) (53ms)
+      ✓ setStageBonus(1, 0) (51ms)
       ✓ setStageBonus as ops
       ✓ setStageBonus as normal
     setWhitelistedStatus
       ✓ setWhitelistedStatus(0, 1)
       ✓ setWhitelistedStatus(this, 1)
       ✓ setWhitelistedStatus(wallet, 1)
-      ✓ setWhitelistedStatus(owner, 1) (52ms)
-      ✓ setWhitelistedStatus(ops, 1) (56ms)
-      ✓ setWhitelistedStatus(normal, 0) (51ms)
-      ✓ setWhitelistedStatus(normal, 1) (56ms)
-      ✓ setWhitelistedStatus(normal, 2) (54ms)
-      ✓ setWhitelistedStatus(normal, 1) (49ms)
+      ✓ setWhitelistedStatus(owner, 1) (48ms)
+      ✓ setWhitelistedStatus(ops, 1) (58ms)
       ✓ setWhitelistedStatus(normal, 0) (53ms)
+      ✓ setWhitelistedStatus(normal, 1) (52ms)
+      ✓ setWhitelistedStatus(normal, 2) (54ms)
+      ✓ setWhitelistedStatus(normal, 1) (48ms)
+      ✓ setWhitelistedStatus(normal, 0) (55ms)
       ✓ setWhitelistedStatus as ops (55ms)
       ✓ setWhitelistedStatus as normal
     setWhitelistedBatch
       ✓ setWhitelistedBatch with empty batch
       ✓ setWhitelistedBatch as normal
-      ✓ setWhitelistedBatch as ops (116ms)
-      ✓ setWhitelistedBatch as owner (119ms)
-      ✓ rerun same batch again (125ms)
-      ✓ remove everybody from whitelist (119ms)
+      ✓ setWhitelistedBatch as ops (121ms)
+      ✓ setWhitelistedBatch as owner (120ms)
+      ✓ rerun same batch again (120ms)
+      ✓ remove everybody from whitelist (147ms)
     buyTokens - whitelist
 Deploying contract BluzelleToken
-TxID     : 0xe9b694100cbd17d7e9c600a208e97e14227f0e1f4dd8aa6ef886656951557f4c
-Address  : 0x395F5648E584e0DBf568C9a76Ab016394a689D04
-Gas used : 1082317
+TxID     : 0x6f5d5fcdc0b17b448aa0a2ea98e5c7bb510b4a209410d68af341a11d1819ebe7
+Address  : 0x69478379F0F7d07F9A5fB757e4bCbA8Ea9084E9B
+Gas used : 1204994
 Deploying contract BluzelleTokenSaleMock
-TxID     : 0x35deb2d881457a1ce64cce9533b6e1bfb876b64a669f4972bac8616362c6c2fe
-Address  : 0x3D7ABD249F83a678B53Df009Cae7a4ea09d859EC
-Gas used : 2229935
-      ✓ buyTokens where neither sender nor receiver whitelisted (157ms)
-      ✓ buyTokens where sender not whitelisted (195ms)
-      ✓ buyTokens where beneficiary not whitelisted (159ms)
-      ✓ buyTokens stage 1, whitelisted stage 1 (313ms)
-      ✓ buyTokens stage 1, whitelisted stage 2 (199ms)
-      ✓ buyTokens stage 2, whitelisted stage 2 (335ms)
-      ✓ buyTokens stage 2, whitelisted stage 3 (166ms)
-      ✓ buyTokens stage 3, whitelisted stage 1 (479ms)
-      ✓ buyTokens stage 3, after removed from whitelist (181ms)
-      ✓ buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus > base bonus (420ms)
-      ✓ buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus > base bonus (551ms)
-      ✓ buyTokens with limit of 1000 tokens (408ms)
-      ✓ buyTokens with limit of 1000 tokens and someone else did a proxy purchase already (608ms)
-      ✓ buyTokens with limit of 1000 tokens and owner already assigned tokens out-of-band (416ms)
+TxID     : 0xed66465b47a638e5a215b027936ba4845038d35e16020a289dd7365f348e7938
+Address  : 0xE999dE6C78F22C484c9a278eFFAe8Cd9FE44AeC1
+Gas used : 2251676
+      ✓ buyTokens where neither sender nor receiver whitelisted (149ms)
+      ✓ buyTokens where sender not whitelisted (190ms)
+      ✓ buyTokens where beneficiary not whitelisted (158ms)
+      ✓ buyTokens stage 1, whitelisted stage 1 (309ms)
+      ✓ buyTokens stage 1, whitelisted stage 2 (200ms)
+      ✓ buyTokens stage 2, whitelisted stage 2 (329ms)
+      ✓ buyTokens stage 2, whitelisted stage 3 (162ms)
+      ✓ buyTokens stage 3, whitelisted stage 1 (336ms)
+      ✓ buyTokens stage 3, after removed from whitelist (190ms)
+      ✓ buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus > base bonus (416ms)
+      ✓ buyTokens stage 3, whitelisted stage 1, beneficiary stage bonus > base bonus (487ms)
+      ✓ buyTokens with limit of 1000 tokens (435ms)
+      ✓ buyTokens with limit of 1000 tokens and someone else did a proxy purchase already (572ms)
+      ✓ buyTokens with limit of 1000 tokens and owner already assigned tokens out-of-band (415ms)
 
 
-  574 passing (37s)
+  590 passing (43s)
 

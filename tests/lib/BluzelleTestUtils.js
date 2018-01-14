@@ -3,13 +3,35 @@
 //
 // Copyright (c) 2017 Bluzelle Networks Pte Ltd.
 // http://www.bluzelle.com/
-//
 // The MIT Licence.
+//
+// Based on test utilities from Enuma Technologies.
+// Copyright (c) 2017 Enuma Technologies
+// https://www.enuma.io/
 // ----------------------------------------------------------------------------
 
 const TestLib = require('../../tools/testlib.js')
 const StdUtils = require('../Enuma/lib/StdTestUtils.js')
 
+
+module.exports.checkReclaimTokens = (receipt, from, to, amount) => {
+
+   TestLib.checkStatus(receipt)
+
+   assert.equal(Object.keys(receipt.events).length, 2)
+
+   assert.equal(typeof receipt.events.Transfer, 'object')
+   const transferEventArgs = receipt.events.Transfer.returnValues
+   assert.equal(Object.keys(transferEventArgs).length, 6)
+   assert.equal(transferEventArgs._from, from)
+   assert.equal(transferEventArgs._to, to)
+   assert.equal(transferEventArgs._value, amount)
+
+   assert.equal(typeof receipt.events.TokensReclaimed, 'object')
+   const reclaimEventArgs = receipt.events.TokensReclaimed.returnValues
+   assert.equal(Object.keys(reclaimEventArgs).length, 2)
+   assert.equal(reclaimEventArgs._amount, amount)
+}
 
 module.exports.checkSetCurrentStage = (receipt, newStage) => {
 

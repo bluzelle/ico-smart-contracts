@@ -150,7 +150,9 @@ contract BluzelleTokenSale is FlexibleTokenSale, BluzelleTokenSaleConfig {
 
 
    // Returns the number of tokens that the user has purchased. We keep a separate balance from
-   // the token contract in case we'd like to do additional sales with new purchase limits.
+   // the token contract in case we'd like to do additional sales with new purchase limits. This behavior
+   // is different from the base implementation which just checks the token balance from the token
+   // contract directly.
    function getUserTokenBalance(address _beneficiary) internal view returns (uint256) {
       return accountTokensPurchased[_beneficiary];
    }
